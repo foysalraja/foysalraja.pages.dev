@@ -3,60 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Foysal Raja | SYSTEM BREACHED</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Foysal Raja | TOP SECRET // SYSTEM OVERRIDE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Poppins:wght@400;600;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
         /* =========================================
-           HACKER THEME - ULTIMATE VERSION
+           ULTIMATE HACKER THEME
            ========================================= */
         :root {
-            --bg-dark: #050505; 
+            --bg-dark: #030303; 
             --primary: #00ff41; /* Matrix Green */
             --secondary: #ff003c; /* Alert Red */
+            --cyan: #00e5ff; /* Neon Cyan */
             --text-main: #e2e8f0;
             --text-muted: #64748b;
             --border: #1e293b;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Fira Code', 'Poppins', monospace; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Share Tech Mono', 'Fira Code', monospace; }
         body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; position: relative; }
         a { text-decoration: none; color: inherit; }
         
+        /* গ্লোবাল গ্রিড ওভারলে */
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px; z-index: -2; pointer-events: none;
+        }
+
         /* ম্যাট্রিক্স ক্যানভাস */
         #matrixCanvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; opacity: 0.15; pointer-events: none;
         }
 
-        /* ওয়ার্নিং ব্যানার */
-        .warning-banner {
-            background: var(--secondary); color: #fff; text-align: center;
-            padding: 5px; font-size: 0.8rem; font-weight: bold;
-            animation: flash 1s infinite alternate; z-index: 1002; position: relative;
+        /* =========================================
+           ENTRY WARNING MODAL (ভয়ংকর সতর্কবার্তা)
+           ========================================= */
+        #entry-warning {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 3, 3, 0.95); z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            flex-direction: column; text-align: center; padding: 20px;
+            backdrop-filter: blur(10px);
         }
-        @keyframes flash { from { opacity: 1; } to { opacity: 0.5; } }
+        .warning-box {
+            border: 2px solid var(--secondary); padding: 40px; border-radius: 10px;
+            background: #000; box-shadow: 0 0 50px rgba(255, 0, 60, 0.3);
+            max-width: 600px; position: relative; overflow: hidden;
+            animation: pulse-border 2s infinite alternate;
+        }
+        .warning-box::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: var(--secondary); animation: scanline 2s linear infinite;
+        }
+        .warning-box h1 { color: var(--secondary); font-size: 2.5rem; margin-bottom: 20px; text-shadow: 0 0 10px var(--secondary); }
+        .warning-box p { color: var(--primary); font-size: 1.1rem; margin-bottom: 15px; font-family: 'Fira Code', monospace; }
+        .warning-box .legal { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 30px; }
+        .warning-box .btn-danger {
+            background: var(--secondary); color: #fff; border: none; padding: 15px 30px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer; border-radius: 5px;
+            font-family: 'Share Tech Mono', monospace; animation: flash 1s infinite alternate;
+        }
+
+        @keyframes pulse-border { from { box-shadow: 0 0 20px rgba(255, 0, 60, 0.2); } to { box-shadow: 0 0 60px rgba(255, 0, 60, 0.6); } }
+        @keyframes scanline { 0% { top: 0; } 100% { top: 100%; } }
+        @keyframes flash { from { opacity: 1; } to { opacity: 0.6; } }
+
+        /* =========================================
+           TOP BAR (System Info)
+           ========================================= */
+        .top-bar {
+            background: #000; border-bottom: 1px solid var(--border);
+            padding: 5px 20px; display: flex; justify-content: space-between;
+            font-size: 0.75rem; color: var(--primary); position: relative; z-index: 100;
+        }
+        .top-bar span.blink { animation: flash 1s infinite alternate; color: var(--secondary); }
 
         /* =========================================
            NAVBAR
            ========================================= */
         .navbar { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 5%; background: rgba(5, 5, 5, 0.9); 
+            padding: 15px 5%; background: rgba(3, 3, 3, 0.9); 
             backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; 
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--primary);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
         }
         .logo { display: flex; align-items: center; gap: 12px; font-size: 1.4rem; font-weight: 800; color: #fff;}
         .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
         .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { font-size: 1rem; color: var(--text-muted); transition: 0.3s; }
+        .nav-links a { font-size: 1rem; color: var(--text-muted); transition: 0.3s; text-transform: uppercase; }
         .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         
         .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; z-index: 1001; }
         .hamburger span { width: 30px; height: 3px; background: var(--primary); border-radius: 3px; transition: 0.3s; }
 
         /* =========================================
-           HERO SECTION & TERMINAL
+           HERO SECTION
            ========================================= */
         .hero { 
             display: flex; align-items: center; justify-content: space-between; 
@@ -64,9 +109,9 @@
         }
         .hero-text { flex: 1; }
         
-        /* গ্লিচ ইফেক্ট (নামের জন্য) */
         .glitch-text {
             font-size: 3.5rem; font-weight: 800; color: #fff; position: relative; display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
         }
         .glitch-text::before, .glitch-text::after {
             content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -78,16 +123,15 @@
         @keyframes glitch-anim-2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 20% { clip: rect(12px, 9999px, 56px, 0); } 40% { clip: rect(87px, 9999px, 34px, 0); } 60% { clip: rect(23px, 9999px, 78px, 0); } 80% { clip: rect(54px, 9999px, 12px, 0); } 100% { clip: rect(98px, 9999px, 65px, 0); } }
 
         .terminal-window {
-            background: rgba(5, 5, 5, 0.8); border: 1px solid var(--primary);
+            background: rgba(0, 0, 0, 0.9); border: 1px solid var(--primary);
             border-radius: 5px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
             margin-bottom: 30px; overflow: hidden;
         }
         .terminal-header { background: #111; padding: 10px 15px; display: flex; gap: 8px; border-bottom: 1px solid var(--border); }
         .dot { width: 12px; height: 12px; border-radius: 50%; }
         .dot.red { background: #ef4444; } .dot.yellow { background: #f59e0b; } .dot.green { background: #10b981; }
-        .terminal-body { padding: 20px; font-size: 1rem; color: var(--primary); min-height: 120px; }
-        .terminal-body .command { color: #fff; margin-bottom: 10px; }
-        .cursor { display: inline-block; width: 10px; height: 18px; background: var(--primary); animation: blink 1s step-end infinite; vertical-align: middle; }
+        .terminal-body { padding: 20px; font-size: 0.9rem; color: var(--primary); min-height: 150px; }
+        .cursor { display: inline-block; width: 10px; height: 15px; background: var(--primary); animation: blink 1s step-end infinite; vertical-align: middle; }
 
         .hero-text p { color: var(--text-muted); font-size: 1rem; margin-bottom: 30px; max-width: 500px; }
         
@@ -97,6 +141,7 @@
             border: 1px solid var(--primary); border-radius: 5px; 
             font-weight: 600; transition: 0.3s; cursor: pointer; font-size: 1rem;
             box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+            font-family: 'Share Tech Mono', monospace;
         }
         .btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 30px var(--primary); }
 
@@ -111,21 +156,35 @@
         .hero-image img:hover { filter: grayscale(0%) contrast(100%); box-shadow: 0 0 60px var(--primary); }
 
         /* =========================================
+           SYSTEM STATS & PROGRESS BARS
+           ========================================= */
+        .system-dashboard {
+            padding: 40px 8%; background: rgba(0,0,0,0.8); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .dash-card { border: 1px solid var(--border); padding: 20px; background: #050505; border-radius: 5px; }
+        .dash-card h4 { color: var(--cyan); margin-bottom: 15px; font-size: 0.9rem; letter-spacing: 1px; }
+        .dash-card .val { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .progress-bar { width: 100%; height: 8px; background: #222; border-radius: 5px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; animation: fillBar 3s forwards; box-shadow: 0 0 10px var(--primary); }
+        @keyframes fillBar { from { width: 0%; } to { width: var(--target-width); } }
+
+        /* =========================================
            LIVE LOGS SECTION
            ========================================= */
         .logs-container {
-            padding: 30px 8%; background: #000; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-            font-family: 'Fira Code', monospace; font-size: 0.85rem;
+            padding: 30px 8%; background: #000; border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
         }
-        .logs-header { color: #fff; margin-bottom: 10px; font-size: 1rem; display: flex; justify-content: space-between; }
+        .logs-header { color: #fff; margin-bottom: 10px; font-size: 1rem; display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding-bottom: 10px;}
         .logs-header span { color: var(--secondary); animation: flash 1s infinite alternate; }
-        #log-output { color: var(--primary); height: 100px; overflow-y: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
-        #log-output div { margin-bottom: 3px; }
+        #log-output { color: var(--primary); height: 120px; overflow-y: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+        #log-output div { margin-bottom: 5px; }
 
         /* =========================================
            FOOTER
            ========================================= */
-        footer { background: #000; border-top: 1px solid var(--border); padding: 20px 5% 15px; font-size: 0.8rem; }
+        footer { background: #000; border-top: 1px solid var(--primary); padding: 20px 5% 15px; font-size: 0.8rem; }
         .footer-container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; text-align: left; }
         .footer-brand { flex: 1; min-width: 200px; }
         .footer-brand img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); margin-bottom: 8px; }
@@ -172,6 +231,8 @@
             .hero { flex-direction: column-reverse; text-align: center; padding: 30px 5%; gap: 30px; }
             .hero-text p { margin: 0 auto 30px auto; }
             .terminal-body { text-align: left; }
+            .warning-box { padding: 20px; }
+            .warning-box h1 { font-size: 1.8rem; }
             
             .footer-container { flex-direction: row; flex-wrap: wrap; justify-content: space-between; text-align: left; gap: 20px; }
             .footer-brand { flex: 100%; text-align: center; margin-bottom: 10px; }
@@ -184,9 +245,22 @@
 </head>
 <body>
 
-    <!-- ওয়ার্নিং ব্যানার -->
-    <div class="warning-banner">
-        ⚠️ UNAUTHORIZED ACCESS IS STRICTLY PROHIBITED ⚠️
+    <!-- ভয়ংকর এন্ট্রি ওয়ার্নিং (প্রথমে এটি দেখাবে) -->
+    <div id="entry-warning">
+        <div class="warning-box">
+            <h1>⚠️ WARNING ⚠️</h1>
+            <p>> UNAUTHORIZED ACCESS DETECTED</p>
+            <p>> YOUR IP HAS BEEN LOGGED</p>
+            <div class="legal">You are about to enter a highly restricted dark-web server. All actions are monitored. Proceed at your own risk.</div>
+            <button class="btn-danger" onclick="document.getElementById('entry-warning').style.display='none'">I ACCEPT THE RISK</button>
+        </div>
+    </div>
+
+    <!-- টপ বার -->
+    <div class="top-bar">
+        <span>[ SYSTEM STATUS: <span class="blink">● ONLINE</span> ]</span>
+        <span>[ ENCRYPTION: AES-256 ]</span>
+        <span>[ NODE: BANGLADESH-DHK ]</span>
     </div>
 
     <!-- ম্যাট্রিক্স ব্যাকগ্রাউন্ড -->
@@ -202,7 +276,7 @@
             <li><a href="#" class="active">./home</a></li>
             <li><a href="#">./about</a></li>
             <li><a href="#">./services</a></li>
-            <li><a href="#">./payloads</a></li>
+            <li><a href="#">./exploits</a></li>
             <li><a href="#">./contact</a></li>
         </ul>
         <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -223,25 +297,46 @@
                 </div>
             </div>
 
-            <h1 class="glitch-text" data-text="System Admin">System Admin</h1>
-            <p style="margin-top: 20px;">Accessing secure server... Connection established. I build secure, blazing-fast web applications and interactive experiences.</p>
+            <h1 class="glitch-text" data-text="ELITE HACKER">ELITE HACKER</h1>
+            <p style="margin-top: 20px;">Bypassing mainframe security... Root privileges acquired. Welcome to the ultimate cyber command center. I build and break systems.</p>
             
-            <a href="#" class="btn">Initialize Connection</a>
+            <a href="#" class="btn">INITIATE PROTOCOL</a>
         </div>
         <div class="hero-image">
             <img src="profile.jpg" alt="Foysal Raja">
         </div>
     </section>
 
+    <!-- সিস্টেম ড্যাশবোর্ড (প্রোগ্রেস বার) -->
+    <section class="system-dashboard">
+        <div class="dash-grid">
+            <div class="dash-card">
+                <h4>DATA EXTRACTION</h4>
+                <div class="val">94.2%</div>
+                <div class="progress-bar"><div class="progress-fill" style="--target-width: 94.2%; animation-delay: 0.2s;"></div></div>
+            </div>
+            <div class="dash-card">
+                <h4>FIREWALL BREACH</h4>
+                <div class="val">100%</div>
+                <div class="progress-bar"><div class="progress-fill" style="--target-width: 100%; animation-delay: 0.5s;"></div></div>
+            </div>
+            <div class="dash-card">
+                <h4>NETWORK NODES ACTIVE</h4>
+                <div class="val">2,450</div>
+                <div class="progress-bar"><div class="progress-fill" style="--target-width: 80%; animation-delay: 0.8s; background: var(--cyan); box-shadow: 0 0 10px var(--cyan);"></div></div>
+            </div>
+        </div>
+    </section>
+
     <!-- লাইভ লগ সেকশন -->
     <section class="logs-container">
         <div class="logs-header">
-            <span>[ SYSTEM LOGS ]</span>
+            <span>[ GLOBAL PACKET SNIFFER ]</span>
             <span>● REC</span>
         </div>
         <div id="log-output">
-            <div>> Initializing kernel...</div>
-            <div>> Loading modules...</div>
+            <div>> Initializing attack vectors...</div>
+            <div>> Scanning ports [1-65535]...</div>
         </div>
     </section>
 
@@ -312,81 +407,81 @@
             ctx.fillStyle = '#00ff41';
             ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < drops.length; i++) {
-            const text = letters.charAt(Math.floor(Math.random() * letters.length));
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-    setInterval(drawMatrix, 50);
-
-    window.addEventListener('resize', () => { 
-        canvas.width = window.innerWidth; 
-        canvas.height = window.innerHeight; 
-    });
-
-    // টার্মিনাল অটো-টাইপিং ইফেক্ট
-    const terminalOutput = document.getElementById('terminal-output');
-    const lines = [
-        "root@foysalraja:~# whoami",
-        "Foysal Raja - Frontend Developer",
-        "root@foysalraja:~# sudo apt-get install skills",
-        "Installing... [OK]",
-        "root@foysalraja:~# status",
-        "System Ready. Awaiting input... _"
-    ];
-    let lineIndex = 0;
-    let charIndex = 0;
-
-    function typeTerminal() {
-        if (lineIndex < lines.length) {
-            if (charIndex < lines[lineIndex].length) {
-                terminalOutput.innerHTML = terminalOutput.innerHTML.replace('<span class="cursor"></span>', '');
-                terminalOutput.innerHTML += lines[lineIndex].charAt(charIndex);
-                terminalOutput.innerHTML += '<span class="cursor"></span>';
-                charIndex++;
-                setTimeout(typeTerminal, 50);
-            } else {
-                terminalOutput.innerHTML = terminalOutput.innerHTML.replace('<span class="cursor"></span>', '');
-                terminalOutput.innerHTML += "<br>";
-                lineIndex++;
-                charIndex = 0;
-                setTimeout(typeTerminal, 500);
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
             }
         }
-    }
-    setTimeout(typeTerminal, 1000);
+        setInterval(drawMatrix, 50);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
-    // লাইভ হ্যাকিং লগ আপডেট
-    const logOutput = document.getElementById('log-output');
-    const fakeLogs = [
-        "IP 192.168.1.1 traced...",
-        "Bypassing firewall... [SUCCESS]",
-        "Downloading encrypted data...",
-        "Connecting to dark web node...",
-        "Password hash cracked: ******",
-        "Port 8080 opened.",
-        "Analyzing network traffic...",
-        "SQL Injection failed. Retrying...",
-        "Root access granted.",
-        "Data transfer 100% complete."
-    ];
+        // টার্মিনাল অটো-টাইপিং ইফেক্ট
+        const terminalOutput = document.getElementById('terminal-output');
+        const lines = [
+            "root@foysalraja:~# sudo su",
+            "Password: ***********",
+            "root@foysalraja:~# ./bypass_firewall.sh",
+            "Bypassing... [DONE]",
+            "root@foysalraja:~# ./access_mainframe.sh",
+            "Connection established. Awaiting command... _"
+        ];
+        let lineIndex = 0;
+        let charIndex = 0;
 
-    function addLog() {
-        const newLog = document.createElement('div');
-        const randomLog = fakeLogs[Math.floor(Math.random() * fakeLogs.length)];
-        newLog.textContent = "> " + randomLog;
-        logOutput.appendChild(newLog);
-        
-        // ম্যাক্সিমাম ৫টি লগ দেখাবে
-        if (logOutput.children.length > 5) {
-            logOutput.removeChild(logOutput.firstChild);
+        function typeTerminal() {
+            if (lineIndex < lines.length) {
+                if (charIndex < lines[lineIndex].length) {
+                    terminalOutput.innerHTML = terminalOutput.innerHTML.replace('<span class="cursor"></span>', '');
+                    terminalOutput.innerHTML += lines[lineIndex].charAt(charIndex);
+                    terminalOutput.innerHTML += '<span class="cursor"></span>';
+                    charIndex++;
+                    setTimeout(typeTerminal, 40);
+                } else {
+                    terminalOutput.innerHTML = terminalOutput.innerHTML.replace('<span class="cursor"></span>', '');
+                    terminalOutput.innerHTML += "<br>";
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeTerminal, 400);
+                }
+            }
         }
-    }
-    setInterval(addLog, 2500);
-</script>
+        setTimeout(typeTerminal, 1000);
+
+        // লাইভ হ্যাকিং লগ আপডেট
+        const logOutput = document.getElementById('log-output');
+        const fakeLogs = [
+            "IP 192.168.1.1 traced...",
+            "Bypassing firewall... [SUCCESS]",
+            "Downloading encrypted data...",
+            "Connecting to dark web node...",
+            "Password hash cracked: ******",
+            "Port 8080 opened.",
+            "Analyzing network traffic...",
+            "SQL Injection failed. Retrying...",
+            "Root access granted.",
+            "Data transfer 100% complete.",
+            "Deploying ransomware...",
+            "Wiping access logs...",
+            "Connection secured. VPN Active."
+        ];
+
+        function addLog() {
+            const newLog = document.createElement('div');
+            const randomLog = fakeLogs[Math.floor(Math.random() * fakeLogs.length)];
+            newLog.textContent = "> " + randomLog;
+            logOutput.appendChild(newLog);
+            
+            if (logOutput.children.length > 5) {
+                logOutput.removeChild(logOutput.firstChild);
+            }
+        }
+        setInterval(addLog, 2000); // প্রতি ২ সেকেন্ডে নতুন লগ আসবে
+
+        // সিস্টেম ওভাররাইড অ্যালার্ট (৫ সেকেন্ড পর পর)
+        setTimeout(() => {
+            console.log("%c [WARNING] INTRUDER ALERT! ", "color: #ff003c; font-size: 20px; background: #000;");
+        }, 5000);
+    </script>
 </body>
-</html>        
+</html>
