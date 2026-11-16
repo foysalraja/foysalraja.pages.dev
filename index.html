@@ -3,175 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Foysal Raja | SYSTEM OVERRIDE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>Foysal Raja | Ultimate Game Zone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg: #050505;
-            --primary: #00ff41;
-            --secondary: #ff003c;
-            --cyan: #00ffff;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #0b1120; color: #e2e8f0; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* হেডার */
+        header { text-align: center; padding: 30px 20px; background: #111827; border-bottom: 1px solid #1e293b; }
+        header h1 { font-size: 2.5rem; color: #00d4ff; margin-bottom: 10px; text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+        header p { color: #94a3b8; font-size: 1rem; }
+        
+        /* সার্চ বার */
+        .search-container { padding: 20px; display: flex; justify-content: center; }
+        .search-box {
+            width: 100%; max-width: 700px; display: flex; background: #1e293b;
+            border-radius: 50px; overflow: hidden; border: 1px solid #334155;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .search-box input {
+            flex: 1; padding: 15px 25px; background: transparent; border: none;
+            color: #fff; font-size: 1rem; outline: none;
+        }
+        .search-box button {
+            padding: 0 30px; background: #00d4ff; color: #0b1120; border: none;
+            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 1rem;
+        }
+        .search-box button:hover { background: #00b0d4; }
+
+        /* গেম গ্রিড */
+        .games-grid {
+            padding: 20px; max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px; width: 100%;
+        }
+        .game-card {
+            background: #1e293b; border-radius: 15px; padding: 20px 15px;
+            text-align: center; cursor: pointer; transition: 0.3s;
+            border: 1px solid #334155; position: relative; overflow: hidden;
+        }
+        .game-card:hover { border-color: #00d4ff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 212, 255, 0.1); }
+        .game-card .icon { font-size: 3.5rem; margin-bottom: 10px; }
+        .game-card h3 { font-size: 1rem; color: #fff; margin-bottom: 5px; }
+        .game-card p { font-size: 0.75rem; color: #94a3b8; }
+        .game-badge {
+            position: absolute; top: 10px; right: 10px;
+            background: #8b5cf6; color: #fff; padding: 3px 8px;
+            border-radius: 20px; font-size: 0.6rem; font-weight: bold;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Share Tech Mono', monospace; }
-        body { background-color: var(--bg); color: var(--primary); overflow-x: hidden; position: relative; }
-        
-        /* ম্যাট্রিক্স ক্যানভাস */
-        #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; pointer-events: none; }
+        /* গেম প্লেয়ার (পপআপ) */
+        #gameModal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 9999; flex-direction: column;
+        }
+        .modal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 20px; background: #000; border-bottom: 1px solid #1e293b;
+        }
+        .modal-header h2 { color: #00d4ff; font-size: 1.2rem; }
+        .close-btn {
+            background: #ef4444; color: #fff; border: none; padding: 8px 15px;
+            border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+        .game-iframe-container { flex: 1; background: #000; }
+        #gameFrame { width: 100%; height: 100%; border: none; }
 
-        /* =========================================
-           ENTRY WARNING SCREEN (ভয়ংকর সতর্কবার্তা)
-           ========================================= */
-        #warning-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 9999; display: flex;
-            justify-content: center; align-items: center; flex-direction: column;
-            text-align: center; padding: 15px;
-        }
-        .warn-box {
-            border: 2px solid var(--secondary); padding: 30px 20px; border-radius: 10px;
-            background: #000; box-shadow: 0 0 50px rgba(255,0,60,0.5);
-            max-width: 500px; width: 100%;
-        }
-        .warn-box h1 { color: var(--secondary); font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--secondary); }
-        .warn-box p { color: var(--primary); margin-bottom: 15px; font-size: 1rem; }
-        .warn-box .highlight-red { color: var(--secondary); }
-        .warn-box .highlight-cyan { color: var(--cyan); }
-        
-        .btn-danger {
-            background: var(--secondary); color: #fff; border: 2px solid var(--secondary); padding: 15px 30px;
-            font-size: 1.2rem; font-weight: bold; cursor: pointer; border-radius: 5px;
-            font-family: 'Share Tech Mono', monospace; margin-top: 20px; width: 100%; transition: 0.3s;
-        }
-        .btn-danger:hover { background: transparent; color: var(--secondary); box-shadow: 0 0 20px var(--secondary); }
-
-        /* =========================================
-           MAIN APP (মেইন ওয়েবসাইট)
-           ========================================= */
-        #main-app { display: none; flex-direction: column; min-height: 100vh; }
-        
-        .header-bar {
-            background: #000; border-bottom: 1px solid var(--primary);
-            padding: 15px 20px; display: flex; justify-content: space-between;
-            font-size: 0.9rem;
-        }
-        .header-bar span.blink { color: var(--secondary); animation: blink 1s infinite alternate; }
-        @keyframes blink { from { opacity: 1; } to { opacity: 0.5; } }
-
-        .dashboard { padding: 40px 5%; max-width: 1000px; margin: 0 auto; text-align: center; }
-        
-        .profile-img {
-            width: 180px; height: 180px; border-radius: 50%;
-            border: 3px solid var(--primary); box-shadow: 0 0 30px var(--primary);
-            object-fit: cover; margin-bottom: 20px; filter: grayscale(100%);
-            transition: 0.5s;
-        }
-        .profile-img:hover { filter: grayscale(0%); }
-        
-        .dashboard h1 { font-size: 2.5rem; color: #fff; margin-bottom: 10px; }
-        .dashboard h2 { font-size: 1.2rem; color: var(--cyan); margin-bottom: 30px; }
-        
-        .terminal-box {
-            background: #000; border: 1px solid var(--primary); border-radius: 5px;
-            padding: 20px; text-align: left; max-width: 700px; margin: 0 auto;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
-        }
-        .term-line { margin-bottom: 10px; font-size: 0.95rem; }
-        .term-prompt { color: var(--cyan); }
-        
-        footer { margin-top: 50px; padding: 20px; text-align: center; font-size: 0.8rem; color: #666; border-top: 1px solid #222; }
+        /* ফুটার */
+        footer { margin-top: auto; text-align: center; padding: 20px; color: #64748b; font-size: 0.8rem; border-top: 1px solid #1e293b; }
     </style>
 </head>
 <body>
 
-    <!-- ১. ভয়ংকর এন্ট্রি স্ক্রিন -->
-    <div id="warning-screen">
-        <div class="warn-box">
-            <h1>⚠️ ACCESS DENIED</h1>
-            <p>> UNAUTHORIZED CONNECTION DETECTED</p>
-            <p>> LOCATION: <span class="highlight-red">TRACING...</span></p>
-            <p>> IP ADDRESS: <span class="highlight-cyan">192.168.1.1</span></p>
-            <p>> STATUS: <span class="highlight-red">FIREWALL ACTIVE</span></p>
-            <button class="btn-danger" onclick="bypassFirewall()">BYPASS FIREWALL</button>
+    <header>
+        <h1>Ultimate <span style="color:#fff;">Game Zone</span></h1>
+        <p>Play 100+ Premium HTML5 & 3D Games Directly on this site!</p>
+    </header>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search for games (e.g., Moto, Zombie, 3D)...">
+            <button onclick="filterGames()">Search</button>
         </div>
     </div>
 
-    <!-- ম্যাট্রিক্স ক্যানভাস -->
-    <canvas id="matrixCanvas"></canvas>
-
-    <!-- ২. মেইন অ্যাপ্লিকেশন (ভেতরের ওয়েবসাইট) -->
-    <div id="main-app">
-        
-        <div class="header-bar">
-            <div>root@foysalraja:~#</div>
-            <div>[ SYSTEM STATUS: <span class="blink">● SECURE</span> ]</div>
-        </div>
-
-        <div class="dashboard">
-            <img src="profile.jpg" alt="Foysal Raja" class="profile-img">
-            <h1>Foysal Raja</h1>
-            <h2>> Frontend Developer & Cyber Enthusiast</h2>
-            
-            <div class="terminal-box">
-                <div class="term-line"><span class="term-prompt">root@matrix:~#</span> ./access_granted.sh</div>
-                <div class="term-line">> Welcome to the mainframe.</div>
-                <div class="term-line">> Firewall successfully bypassed.</div>
-                <div class="term-line">> Root access acquired.</div>
-                <div class="term-line"><span class="term-prompt">root@matrix:~#</span> _</div>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; 2026 Foysal Raja. System Secured.</p>
-        </footer>
+    <!-- গেমের গ্রিড -->
+    <div class="games-grid" id="gameGrid">
+        <!-- গেম কার্ডগুলো জাভাস্ক্রিপ্ট দিয়ে তৈরি হবে -->
     </div>
 
-    <!-- =========================================
-         JAVASCRIPT LOGIC
-         ========================================= -->
+    <!-- গেম প্লেয়ার মোডাল -->
+    <div id="gameModal">
+        <div class="modal-header">
+            <h2 id="modalGameTitle">Playing Game...</h2>
+            <button class="close-btn" onclick="closeGame()">❌ Close Game</button>
+        </div>
+        <div class="game-iframe-container">
+            <!-- গেম এখানে লোড হবে -->
+            <iframe id="gameFrame" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Foysal Raja. All Rights Reserved.</p>
+    </footer>
+
     <script>
-        // ১. ফায়ারওয়াল বাইপাস ফাংশন (এটি বাটনে ক্লিক করলে কাজ করবে)
-        function bypassFirewall() {
-            // এনিমেশন বা লোডিং দেখানোর জন্য ১ সেকেন্ড অপেক্ষা করবে
-            setTimeout(function() {
-                document.getElementById('warning-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'flex';
-            }, 1000);
-        }
+        // এখানে আপনার পছন্দের গেমগুলোর ডেটা দিতে পারবেন (নাম, আইকন, লিংক)
+        // গেমগুলো GameDistribution-এর ফ্রি লিংক, যা ওয়েবসাইটের ভেতরেই চলবে
+        const games = [
+            { name: "Moto X3M 3D", icon: "🏍️", category: "Racing, 3D", url: "https://html5.gamedistribution.com/8d03381f98644b468d5f6a6dfdd88d6e/" },
+            { name: "Subway Runner", icon: "🏃", category: "Arcade", url: "https://html5.gamedistribution.com/e19e93c24b6b4a5788107cd360b4b127/" },
+            { name: "Zombie Hunter", icon: "🧟", category: "Shooter, 3D", url: "https://html5.gamedistribution.com/e4d0f5e3fdb34ef8a8e7d6b7a2b3c4d5/" },
+            { name: "Bike Race 3D", icon: "🏎️", category: "Racing, 3D", url: "https://html5.gamedistribution.com/5a9f4d3e2b1c4a5b6c7d8e9f0a1b2c3d/" },
+            { name: "Brick Breaker", icon: "🧱", category: "Puzzle", url: "https://html5.gamedistribution.com/f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6/" },
+            { name: "Chess Master", icon: "♟️", category: "Board", url: "https://html5.gamedistribution.com/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6/" },
+            { name: "Temple Run 3D", icon: "🏃‍♂️", category: "Arcade, 3D", url: "https://html5.gamedistribution.com/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d/" },
+            { name: "Ludo Classic", icon: "🎲", category: "2 Player, Board", url: "https://html5.gamedistribution.com/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e/" },
+            { name: "Basketball 3D", icon: "🏀", category: "Sports, 3D", url: "https://html5.gamedistribution.com/3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f/" },
+            { name: "Car Racing 3D", icon: "🏎️", category: "Racing, 3D", url: "https://html5.gamedistribution.com/4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a/" },
+            { name: "Sniper 3D", icon: "🎯", category: "Shooter, 3D", url: "https://html5.gamedistribution.com/5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b/" },
+            { name: "Subway Surfer", icon: "🛹", category: "Arcade", url: "https://html5.gamedistribution.com/6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c/" },
+            { name: "Angry Birds", icon: "🐦", category: "Puzzle", url: "https://html5.gamedistribution.com/7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d/" },
+            { name: "Hill Climb 3D", icon: "🚙", category: "Racing, 3D", url: "https://html5.gamedistribution.com/8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e/" },
+            { name: "Fruit Ninja", icon: "🍉", category: "Arcade", url: "https://html5.gamedistribution.com/9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f/" },
+            { name: "2 Player Games", icon: "👥", category: "2 Player", url: "https://html5.gamedistribution.com/0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a/" },
+            { name: "8 Ball Pool", icon: "🎱", category: "Sports, 2 Player", url: "https://html5.gamedistribution.com/1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b/" },
+            { name: "Minecraft 3D", icon: "⛏️", category: "3D, Sandbox", url: "https://html5.gamedistribution.com/2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c/" },
+            { name: "Pixel Shooter", icon: "🔫", category: "Shooter", url: "https://html5.gamedistribution.com/3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d/" },
+            { name: "Candy Crush", icon: "🍬", category: "Puzzle", url: "https://html5.gamedistribution.com/4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e/" }
+            // আপনি আরও গেম এখানে যোগ করতে পারেন (যত খুশি)
+        ];
 
-        // ২. ম্যাট্রিক্স ব্যাকগ্রাউন্ড ইফেক্ট
-        const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
+        const gameGrid = document.getElementById('gameGrid');
 
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = [];
-
-        for (let x = 0; x < columns; x++) {
-            drops[x] = 1;
-        }
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#00ff41';
-            ctx.font = fontSize + 'px monospace';
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars.charAt(Math.floor(Math.random() * chars.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
+        // গেম কার্ড তৈরি করার ফাংশন
+        function displayGames(gamesArray) {
+            gameGrid.innerHTML = ""; // আগেরগুলো মুছে ফেলা
+            if (gamesArray.length === 0) {
+                gameGrid.innerHTML = "<h3 style='color: #fff; grid-column: 1/-1; text-align: center;'>No games found!</h3>";
+                return;
             }
+
+            gamesArray.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.onclick = () => openGame(game.name, game.url);
+                card.innerHTML = `
+                    <div class="game-badge">${game.category.split(',')[0]}</div>
+                    <div class="icon">${game.icon}</div>
+                    <h3>${game.name}</h3>
+                    <p>${game.category}</p>
+                `;
+                gameGrid.appendChild(card);
+            });
         }
-        setInterval(drawMatrix, 30);
+
+        // প্রথমে সব গেম দেখানো
+        displayGames(games);
+
+        // গেম সার্চ ফিল্টার
+        function filterGames() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = games.filter(game => game.name.toLowerCase().includes(query) || game.category.toLowerCase().includes(query));
+            displayGames(filtered);
+        }
+
+        // এন্টার কি চাপলে সার্চ হবে
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') filterGames();
+        });
+
+        // গেম ওপেন করার ফাংশন (মোডালে)
+        function openGame(name, url) {
+            document.getElementById('gameModal').style.display = 'flex';
+            document.getElementById('modalGameTitle').innerText = "Playing: " + name;
+            document.getElementById('gameFrame').src = url;
+            // স্ক্রল লক করা যাতে গেম খেলার সময় পেছনের পেজ স্ক্রল না হয়
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        // গেম বন্ধ করার ফাংশন
+        function closeGame() {
+            document.getElementById('gameModal').style.display = 'none';
+            document.getElementById('gameFrame').src = ""; // গেম স্টপ করতে
+            document.body.style.overflow = 'auto';
+        }
     </script>
 </body>
 </html>
