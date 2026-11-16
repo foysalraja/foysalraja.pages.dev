@@ -3,222 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Foysal Raja | Ultimate Game Zone</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Foysal Raja | Cyber Security Toolkit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #0b1120; color: #e2e8f0; display: flex; flex-direction: column; min-height: 100vh; }
-        
-        /* হেডার (লোগো, নাম ও প্রোফাইল ছবি) */
-        header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 20px; background: #111827; border-bottom: 1px solid #1e293b; 
-        }
-        .header-left { display: flex; align-items: center; gap: 12px; }
-        .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #00d4ff; object-fit: cover; }
-        .header-left h1 { font-size: 1.2rem; color: #fff; font-weight: 600; }
-        .header-left h1 span { color: #00d4ff; }
-        
-        .profile-img { 
-            width: 45px; height: 45px; border-radius: 50%; 
-            border: 2px solid #00d4ff; object-fit: cover;
-            box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+        :root {
+            --bg: #0a0a0a;
+            --panel: #111111;
+            --primary: #00ff41; /* Matrix Green */
+            --secondary: #ff003c; /* Alert Red */
+            --cyan: #00e5ff; /* Cyan */
+            --text: #d1d5db;
+            --border: #2a2a2a;
         }
 
-        /* গেম জোন টাইটেল ও সার্চ */
-        .page-title { text-align: center; padding: 30px 20px 10px; }
-        .page-title h2 { font-size: 2rem; color: #00d4ff; margin-bottom: 10px; text-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
-        .page-title p { color: #94a3b8; font-size: 0.95rem; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Fira Code', monospace; }
+        body { background-color: var(--bg); color: var(--primary); min-height: 100vh; display: flex; flex-direction: column; }
 
-        .search-container { padding: 20px; display: flex; justify-content: center; }
-        .search-box {
-            width: 100%; max-width: 700px; display: flex; background: #1e293b;
-            border-radius: 50px; overflow: hidden; border: 1px solid #334155;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .search-box input {
-            flex: 1; padding: 15px 25px; background: transparent; border: none;
-            color: #fff; font-size: 1rem; outline: none;
-        }
-        .search-box button {
-            padding: 0 30px; background: #00d4ff; color: #0b1120; border: none;
-            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 1rem;
-        }
-        .search-box button:hover { background: #00b0d4; }
-
-        /* গেম গ্রিড */
-        .games-grid {
-            padding: 20px; max-width: 1200px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px; width: 100%;
-        }
-        .game-card {
-            background: #1e293b; border-radius: 15px; padding: 15px;
-            text-align: center; cursor: pointer; transition: 0.3s;
-            border: 1px solid #334155; position: relative; overflow: hidden;
-        }
-        .game-card:hover { border-color: #00d4ff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 212, 255, 0.1); }
-        .game-card .icon { font-size: 3rem; margin-bottom: 10px; }
-        .game-card h3 { font-size: 0.95rem; color: #fff; margin-bottom: 5px; }
-        .game-card p { font-size: 0.75rem; color: #94a3b8; }
-        .game-badge {
-            position: absolute; top: 10px; right: 10px;
-            background: #8b5cf6; color: #fff; padding: 3px 8px;
-            border-radius: 20px; font-size: 0.6rem; font-weight: bold;
-        }
-
-        /* গেম প্লেয়ার (পপআপ) */
-        #gameModal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 9999; flex-direction: column;
-        }
-        .modal-header {
+        /* টপ হেডার */
+        header {
+            background: #000; padding: 15px 20px; border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 20px; background: #111827; border-bottom: 1px solid #1e293b;
         }
-        .modal-header h2 { color: #00d4ff; font-size: 1.2rem; }
-        .modal-btns { display: flex; gap: 10px; }
-        
-        /* নতুন ব্যাক ও ক্লোজ বাটন */
-        .back-btn {
-            background: #1e293b; color: #fff; border: 1px solid #334155; 
-            padding: 8px 15px; border-radius: 5px; cursor: pointer; 
-            font-weight: bold; transition: 0.3s; text-decoration: none;
-            display: flex; align-items: center; gap: 5px;
-        }
-        .back-btn:hover { background: #334155; border-color: #00d4ff; color: #00d4ff; }
-        
-        .close-btn {
-            background: #ef4444; color: #fff; border: none; padding: 8px 15px;
-            border-radius: 5px; cursor: pointer; font-weight: bold;
-        }
-        .close-btn:hover { background: #dc2626; }
+        .logo-area { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: bold; font-size: 1.2rem; }
+        .logo-area img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); }
+        .sys-status { font-size: 0.85rem; color: var(--secondary); animation: blink 1s infinite alternate; }
 
-        .game-iframe-container { flex: 1; background: #000; }
-        #gameFrame { width: 100%; height: 100%; border: none; }
+        /* মেইন ড্যাশবোর্ড গ্রিড */
+        .dashboard {
+            display: grid; grid-template-columns: 300px 1fr; gap: 20px;
+            padding: 20px; max-width: 1400px; margin: 0 auto; width: 100%; flex: 1;
+        }
 
-        /* ফুটার */
-        footer { margin-top: auto; text-align: center; padding: 20px; color: #64748b; font-size: 0.8rem; border-top: 1px solid #1e293b; }
+        /* সাইডবার প্যানেল */
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .panel {
+            background: var(--panel); border: 1px solid var(--border);
+            border-radius: 8px; padding: 15px;
+        }
+        .panel-title {
+            color: var(--cyan); font-size: 0.9rem; margin-bottom: 15px;
+            border-bottom: 1px dashed var(--border); padding-bottom: 8px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        /* সিস্টেম স্ট্যাটাস বার */
+        .stat-row { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; color: var(--text); }
+        .bar-bg { width: 100%; height: 8px; background: #222; border-radius: 4px; margin-bottom: 15px; overflow: hidden; }
+        .bar-fill { height: 100%; background: var(--primary); width: 0%; transition: 1s; box-shadow: 0 0 10px var(--primary); }
+
+        /* কন্ট্রোল প্যানেল (বাটন) */
+        .btn {
+            width: 100%; padding: 12px; background: transparent; border: 1px solid var(--primary);
+            color: var(--primary); font-weight: bold; cursor: pointer; border-radius: 5px;
+            margin-bottom: 10px; transition: 0.3s; font-family: 'Fira Code', monospace;
+            text-align: left; display: flex; align-items: center; gap: 10px;
+        }
+        .btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px rgba(0,255,65,0.3); }
+        .btn-danger { border-color: var(--secondary); color: var(--secondary); }
+        .btn-danger:hover { background: var(--secondary); color: #fff; box-shadow: 0 0 15px rgba(255,0,60,0.3); }
+        .btn-cyan { border-color: var(--cyan); color: var(--cyan); }
+        .btn-cyan:hover { background: var(--cyan); color: #000; box-shadow: 0 0 15px rgba(0,229,255,0.3); }
+
+        /* মেইন টার্মিনাল আউটপুট */
+        .main-terminal {
+            background: #000; border: 1px solid var(--border); border-radius: 8px;
+            display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .term-header {
+            background: #111; padding: 10px 15px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; font-size: 0.85rem;
+        }
+        .term-dots { display: flex; gap: 8px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
+        
+        .term-body {
+            padding: 20px; flex: 1; overflow-y: auto; color: var(--primary);
+            font-size: 0.9rem; line-height: 1.6;
+        }
+        .term-body::-webkit-scrollbar { width: 6px; }
+        .term-body::-webkit-scrollbar-thumb { background: #333; }
+
+        .input-line {
+            display: flex; align-items: center; padding: 15px; background: #0a0a0a;
+            border-top: 1px solid var(--border);
+        }
+        .prompt { color: var(--cyan); margin-right: 10px; font-weight: bold; }
+        input[type="text"] {
+            background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace;
+            font-size: 1rem; width: 100%; outline: none; caret-color: var(--primary);
+        }
+
+        /* লগ কালার */
+        .log-success { color: var(--primary); }
+        .log-error { color: var(--secondary); }
+        .log-info { color: var(--cyan); }
+        .log-warn { color: #f59e0b; }
+        
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.4; } }
+
+        @media (max-width: 768px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .main-terminal { height: 500px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- হেডার: লোগো এবং প্রোফাইল ছবি -->
+    <!-- হেডার -->
     <header>
-        <div class="header-left">
-            <img src="logo.jpg" alt="FR Logo" class="logo-img">
-            <h1>Foysal <span>Raja</span></h1>
+        <div class="logo-area">
+            <img src="logo.jpg" alt="Logo">
+            <span>root@foysal_cyber:~#</span>
         </div>
-        <div>
-            <img src="profile.jpg" alt="Profile" class="profile-img">
-        </div>
+        <div class="sys-status">[ STATUS: ONLINE ]</div>
     </header>
 
-    <!-- গেম জোন টাইটেল -->
-    <div class="page-title">
-        <h2>Ultimate <span style="color:#fff;">Game Zone</span></h2>
-        <p>Play Premium HTML5 & 3D Games Directly on this site!</p>
-    </div>
+    <!-- মেইন ড্যাশবোর্ড -->
+    <div class="dashboard">
+        
+        <!-- সাইডবার (কন্ট্রোল এবং স্ট্যাটাস) -->
+        <div class="sidebar">
+            
+            <div class="panel">
+                <div class="panel-title">System Resources</div>
+                <div class="stat-row"><span>CPU Load</span><span id="cpuVal">45%</span></div>
+                <div class="bar-bg"><div class="bar-fill" id="cpuBar" style="width: 45%;"></div></div>
+                
+                <div class="stat-row"><span>RAM Usage</span><span id="ramVal">62%</span></div>
+                <div class="bar-bg"><div class="bar-fill" id="ramBar" style="width: 62%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan);"></div></div>
+                
+                <div class="stat-row"><span>Network Traffic</span><span id="netVal">12%</span></div>
+                <div class="bar-bg"><div class="bar-fill" id="netBar" style="width: 12%; background: var(--secondary); box-shadow: 0 0 10px var(--secondary);"></div></div>
+            </div>
 
-    <!-- সার্চ বার -->
-    <div class="search-container">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search for games (e.g., Moto, Zombie, 3D)...">
-            <button onclick="filterGames()">Search</button>
+            <div class="panel">
+                <div class="panel-title">Attack Vectors</div>
+                <button class="btn" onclick="runScan()">🛰️ Network Scan</button>
+                <button class="btn btn-cyan" onclick="runTrace()">🌐 IP Trace</button>
+                <button class="btn btn-danger" onclick="runBruteForce()">🔓 Brute Force</button>
+                <button class="btn" onclick="clearTerminal()" style="border-color: #555; color: #888;">🗑️ Clear Logs</button>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">Live Traffic</div>
+                <div id="live-traffic" style="font-size: 0.75rem; color: #666; height: 100px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;">
+                    <!-- জাভাস্ক্রিপ্ট দিয়ে আসবে -->
+                </div>
+            </div>
+
         </div>
-    </div>
 
-    <!-- গেমের গ্রিড -->
-    <div class="games-grid" id="gameGrid">
-        <!-- গেম কার্ডগুলো জাভাস্ক্রিপ্ট দিয়ে তৈরি হবে -->
-    </div>
-
-    <!-- গেম প্লেয়ার মোডাল -->
-    <div id="gameModal">
-        <div class="modal-header">
-            <h2 id="modalGameTitle">Playing Game...</h2>
-            <div class="modal-btns">
-                <!-- ব্যাক বাটন -->
-                <button class="back-btn" onclick="closeGame()">← Back to Home</button>
-                <!-- ক্লোজ বাটন -->
-                <button class="close-btn" onclick="closeGame()">❌ Close</button>
+        <!-- মেইন টার্মিনাল (আউটপুট) -->
+        <div class="main-terminal">
+            <div class="term-header">
+                <span>Terminal - /bin/bash</span>
+                <div class="term-dots">
+                    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                </div>
+            </div>
+            <div class="term-body" id="terminal-output">
+                <div class="log-info">=========================================</div>
+                <div class="log-info"> CYBER SECURITY TOOLKIT v3.0 INITIALIZED </div>
+                <div class="log-info">=========================================</div>
+                <div>Welcome, Agent Foysal.</div>
+                <div>System is ready. Select an attack vector from the left panel.</div>
+                <br>
+            </div>
+            <div class="input-line">
+                <span class="prompt">admin@cyber:~$</span>
+                <input type="text" id="cmdInput" placeholder="Type 'help' for commands..." autocomplete="off">
             </div>
         </div>
-        <div class="game-iframe-container">
-            <!-- গেম এখানে লোড হবে -->
-            <iframe id="gameFrame" allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-pointer-lock"></iframe>
-        </div>
+
     </div>
 
-    <footer>
-        <p>&copy; 2026 Foysal Raja. All Rights Reserved.</p>
-    </footer>
-
     <script>
-        // গেমের ডেটা (লিংকগুলো কাজ করার কথা, তবে কিছু লিংক কাজ না করলে জানাবেন)
-        const games = [
-            { name: "Moto X3M", icon: "🏍️", category: "Racing, 3D", url: "https://html5.gamemonetize.com/8d03381f98644b468d5f6a6dfdd88d6e/" },
-            { name: "Subway Runner", icon: "🏃", category: "Arcade", url: "https://html5.gamemonetize.com/e19e93c24b6b4a5788107cd360b4b127/" },
-            { name: "Zombie Hunter", icon: "🧟", category: "Shooter, 3D", url: "https://html5.gamemonetize.com/e4d0f5e3fdb34ef8a8e7d6b7a2b3c4d5/" },
-            { name: "Bike Race 3D", icon: "🏎️", category: "Racing, 3D", url: "https://html5.gamemonetize.com/5a9f4d3e2b1c4a5b6c7d8e9f0a1b2c3d/" },
-            { name: "Brick Breaker", icon: "🧱", category: "Puzzle", url: "https://html5.gamemonetize.com/f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6/" },
-            { name: "Chess Master", icon: "♟️", category: "Board", url: "https://html5.gamemonetize.com/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6/" },
-            { name: "Temple Run 3D", icon: "🏃‍♂️", category: "Arcade, 3D", url: "https://html5.gamemonetize.com/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d/" },
-            { name: "Ludo Classic", icon: "🎲", category: "2 Player, Board", url: "https://html5.gamemonetize.com/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e/" },
-            { name: "Basketball 3D", icon: "🏀", category: "Sports, 3D", url: "https://html5.gamemonetize.com/3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f/" },
-            { name: "Car Racing 3D", icon: "🏎️", category: "Racing, 3D", url: "https://html5.gamemonetize.com/4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a/" },
-            { name: "Sniper 3D", icon: "🎯", category: "Shooter, 3D", url: "https://html5.gamemonetize.com/5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b/" },
-            { name: "Subway Surfer", icon: "🛹", category: "Arcade", url: "https://html5.gamemonetize.com/6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c/" }
-        ];
+        const termOutput = document.getElementById('terminal-output');
+        const cmdInput = document.getElementById('cmdInput');
+        const liveTraffic = document.getElementById('live-traffic');
 
-        const gameGrid = document.getElementById('gameGrid');
+        // টার্মিনালে লগ লেখার ফাংশন
+        function writeLog(text, type = 'default') {
+            const p = document.createElement('div');
+            p.className = `log-${type}`;
+            p.innerHTML = text;
+            termOutput.appendChild(p);
+            termOutput.scrollTop = termOutput.scrollHeight;
+        }
 
-        function displayGames(gamesArray) {
-            gameGrid.innerHTML = ""; 
-            if (gamesArray.length === 0) {
-                gameGrid.innerHTML = "<h3 style='color: #fff; grid-column: 1/-1; text-align: center;'>No games found!</h3>";
-                return;
+        // ১. নেটওয়ার্ক স্ক্যান সিমুলেশন
+        function runScan() {
+            writeLog("> Initializing Network Scan...", "info");
+            writeLog("> Scanning target subnet: 192.168.1.0/24", "default");
+            
+            let ips = ["192.168.1.1", "192.168.1.10", "192.168.1.45", "192.168.1.102", "10.0.0.55"];
+            let ports = ["Port 22 (SSH) OPEN", "Port 80 (HTTP) OPEN", "Port 443 (HTTPS) SECURE", "Port 3306 (MySQL) VULNERABLE"];
+
+            let i = 0;
+            let interval = setInterval(() => {
+                if (i < 5) {
+                    let ip = ips[Math.floor(Math.random() * ips.length)];
+                    let port = ports[Math.floor(Math.random() * ports.length)];
+                    writeLog(`[+] Found Host: ${ip} | ${port}`, "success");
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    writeLog("> Scan complete. 5 hosts found.", "info");
+                    writeLog("> 1 VULNERABILITY DETECTED.", "error");
+                }
+            }, 800);
+        }
+
+        // ২. আইপি ট্রেস সিমুলেশন
+        function runTrace() {
+            writeLog("> Tracing target IP route...", "info");
+            let hops = [
+                "Hop 1: 10.0.0.1 (Local Gateway) - 2ms",
+                "Hop 2: 172.16.5.1 (ISP Router) - 14ms",
+                "Hop 3: 203.0.113.1 (Backbone) - 45ms",
+                "Hop 4: 198.51.100.5 (Target Server) - 89ms",
+                "Trace Complete. Target Location: Dhaka, BD."
+            ];
+            let i = 0;
+            let interval = setInterval(() => {
+                if (i < hops.length) {
+                    writeLog(hops[i], "cyan");
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
+        // ৩. ব্রুট ফোর্স (পাসওয়ার্ড ক্র্যাক) সিমুলেশন
+        function runBruteForce() {
+            writeLog("> Target: admin@192.168.1.102", "info");
+            writeLog("> Initiating dictionary attack...", "warn");
+            
+            let passwords = ["123456", "password", "admin123", "qwerty", "root", "admin1234"];
+            let i = 0;
+            let interval = setInterval(() => {
+                if (i < passwords.length) {
+                    writeLog(`Trying pass: ${passwords[i]} ... FAILED`, "error");
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    writeLog(`Trying pass: Foysal@2026 ... [SUCCESS]`, "success");
+                    writeLog("> ACCESS GRANTED. ROOT SHELL OPENED.", "error");
+                    document.getElementById('cpuVal').innerText = "98%";
+                    document.getElementById('cpuBar').style.width = "98%";
+                }
+            }, 600);
+        }
+
+        // টার্মিনালে কমান্ড ইনপুট
+        cmdInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                let cmd = cmdInput.value.trim().toLowerCase();
+                if (cmd) {
+                    writeLog(`admin@cyber:~$ ${cmd}`, "cyan");
+                    if (cmd === 'help') {
+                        writeLog("Available commands:<br> - scan : Run network scan<br> - trace : Trace IP route<br> - hack : Run brute force attack<br> - clear : Clear terminal", "info");
+                    } else if (cmd === 'scan') {
+                        runScan();
+                    } else if (cmd === 'trace') {
+                        runTrace();
+                    } else if (cmd === 'hack') {
+                        runBruteForce();
+                    } else if (cmd === 'clear') {
+                        clearTerminal();
+                    } else {
+                        writeLog(`Command not found: ${cmd}`, "error");
+                    }
+                    cmdInput.value = '';
+                }
             }
-
-            gamesArray.forEach(game => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.onclick = () => openGame(game.name, game.url);
-                card.innerHTML = `
-                    <div class="game-badge">${game.category.split(',')[0]}</div>
-                    <div class="icon">${game.icon}</div>
-                    <h3>${game.name}</h3>
-                    <p>${game.category}</p>
-                `;
-                gameGrid.appendChild(card);
-            });
-        }
-
-        displayGames(games);
-
-        function filterGames() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = games.filter(game => game.name.toLowerCase().includes(query) || game.category.toLowerCase().includes(query));
-            displayGames(filtered);
-        }
-
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') filterGames();
         });
 
-        function openGame(name, url) {
-            document.getElementById('gameModal').style.display = 'flex';
-            document.getElementById('modalGameTitle').innerText = "Playing: " + name;
-            document.getElementById('gameFrame').src = url;
-            document.body.style.overflow = 'hidden'; 
+        function clearTerminal() {
+            termOutput.innerHTML = '<div>Terminal cleared.</div><br>';
         }
 
-        function closeGame() {
-            document.getElementById('gameModal').style.display = 'none';
-            document.getElementById('gameFrame').src = ""; 
-            document.body.style.overflow = 'auto';
+        // লাইভ ট্রাফিক (হেক্স ডাটা) জেনারেটর
+        function generateTraffic() {
+            const hex = Math.floor(Math.random() * 16777215).toString(16).toUpperCase().padStart(6, '0');
+            const p = document.createElement('div');
+            p.innerText = `> PKT_0x${hex} ... [INTERCEPTED]`;
+            liveTraffic.appendChild(p);
+            if (liveTraffic.children.length > 6) liveTraffic.removeChild(liveTraffic.firstChild);
         }
+        setInterval(generateTraffic, 400);
+
+        // সিস্টেম স্ট্যাটাস র‍্যান্ডম আপডেট
+        setInterval(() => {
+            let cpu = Math.floor(Math.random() * 40) + 20;
+            let ram = Math.floor(Math.random() * 30) + 40;
+            document.getElementById('cpuVal').innerText = cpu + "%";
+            document.getElementById('cpuBar').style.width = cpu + "%";
+            document.getElementById('ramVal').innerText = ram + "%";
+            document.getElementById('ramBar').style.width = ram + "%";
+        }, 3000);
+
     </script>
 </body>
 </html>
