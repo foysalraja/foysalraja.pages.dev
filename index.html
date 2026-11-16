@@ -3,158 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Foysal Raja | System Admin</title>
+    <title>Foysal Raja | SYSTEM BREACHED</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
         /* =========================================
-           HACKER THEME (Cyber Security)
+           HACKER THEME - ULTIMATE VERSION
            ========================================= */
         :root {
-            --bg-dark: #000000; /* একদম কালো */
-            --primary: #00ff41; /* ম্যাট্রিক্স গ্রিন */
-            --primary-glow: rgba(0, 255, 65, 0.4);
+            --bg-dark: #050505; 
+            --primary: #00ff41; /* Matrix Green */
+            --secondary: #ff003c; /* Alert Red */
             --text-main: #e2e8f0;
             --text-muted: #64748b;
             --border: #1e293b;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Fira Code', 'Poppins', monospace; }
         body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; position: relative; }
         a { text-decoration: none; color: inherit; }
         
-        /* ম্যাট্রিক্স ক্যানভাস (ব্যাকগ্রাউন্ড) */
+        /* ম্যাট্রিক্স ক্যানভাস */
         #matrixCanvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.15; /* ব্যাকগ্রাউন্ডে হালকা দেখাবে */
-            pointer-events: none;
+            z-index: -1; opacity: 0.15; pointer-events: none;
         }
 
-        .highlight { color: var(--primary); font-family: 'Fira Code', monospace; }
+        /* ওয়ার্নিং ব্যানার */
+        .warning-banner {
+            background: var(--secondary); color: #fff; text-align: center;
+            padding: 5px; font-size: 0.8rem; font-weight: bold;
+            animation: flash 1s infinite alternate; z-index: 1002; position: relative;
+        }
+        @keyframes flash { from { opacity: 1; } to { opacity: 0.5; } }
 
         /* =========================================
            NAVBAR
            ========================================= */
         .navbar { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 5%; background: rgba(0, 0, 0, 0.8); 
+            padding: 15px 5%; background: rgba(5, 5, 5, 0.9); 
             backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; 
             border-bottom: 1px solid var(--border);
         }
-        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.4rem; font-weight: 800; font-family: 'Fira Code', monospace; color: #fff;}
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.4rem; font-weight: 800; color: #fff;}
         .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
         .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { font-family: 'Fira Code', monospace; font-size: 1rem; color: var(--text-muted); transition: 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
+        .nav-links a { font-size: 1rem; color: var(--text-muted); transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
         
         .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; z-index: 1001; }
         .hamburger span { width: 30px; height: 3px; background: var(--primary); border-radius: 3px; transition: 0.3s; }
 
         /* =========================================
-           HERO SECTION (Terminal Look)
+           HERO SECTION & TERMINAL
            ========================================= */
         .hero { 
             display: flex; align-items: center; justify-content: space-between; 
-            min-height: 85vh; padding: 0 8%; gap: 40px; 
+            min-height: 85vh; padding: 20px 8%; gap: 40px; 
         }
         .hero-text { flex: 1; }
         
+        /* গ্লিচ ইফেক্ট (নামের জন্য) */
+        .glitch-text {
+            font-size: 3.5rem; font-weight: 800; color: #fff; position: relative; display: inline-block;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .glitch-text::before { left: 2px; text-shadow: -2px 0 var(--secondary); clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+        .glitch-text::after { left: -2px; text-shadow: -2px 0 var(--primary); clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse; }
+
+        @keyframes glitch-anim { 0% { clip: rect(12px, 9999px, 86px, 0); } 20% { clip: rect(62px, 9999px, 11px, 0); } 40% { clip: rect(33px, 9999px, 98px, 0); } 60% { clip: rect(89px, 9999px, 34px, 0); } 80% { clip: rect(43px, 9999px, 67px, 0); } 100% { clip: rect(78px, 9999px, 23px, 0); } }
+        @keyframes glitch-anim-2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 20% { clip: rect(12px, 9999px, 56px, 0); } 40% { clip: rect(87px, 9999px, 34px, 0); } 60% { clip: rect(23px, 9999px, 78px, 0); } 80% { clip: rect(54px, 9999px, 12px, 0); } 100% { clip: rect(98px, 9999px, 65px, 0); } }
+
         .terminal-window {
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 30px;
-            overflow: hidden;
+            background: rgba(5, 5, 5, 0.8); border: 1px solid var(--primary);
+            border-radius: 5px; box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            margin-bottom: 30px; overflow: hidden;
         }
-        .terminal-header {
-            background: #0f172a;
-            padding: 10px 15px;
-            display: flex;
-            gap: 8px;
-            border-bottom: 1px solid var(--border);
-        }
+        .terminal-header { background: #111; padding: 10px 15px; display: flex; gap: 8px; border-bottom: 1px solid var(--border); }
         .dot { width: 12px; height: 12px; border-radius: 50%; }
         .dot.red { background: #ef4444; } .dot.yellow { background: #f59e0b; } .dot.green { background: #10b981; }
-        
-        .terminal-body { padding: 20px; font-family: 'Fira Code', monospace; font-size: 1.1rem; color: var(--primary); }
+        .terminal-body { padding: 20px; font-size: 1rem; color: var(--primary); min-height: 120px; }
         .terminal-body .command { color: #fff; margin-bottom: 10px; }
-        .typewriter {
-            border-right: 3px solid var(--primary);
-            white-space: nowrap; overflow: hidden; 
-            animation: typing 3s steps(30, end) infinite alternate, blink 0.8s step-end infinite;
-        }
+        .cursor { display: inline-block; width: 10px; height: 18px; background: var(--primary); animation: blink 1s step-end infinite; vertical-align: middle; }
 
-        .hero-text h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 15px; color: #fff; }
-        .hero-text p { color: var(--text-muted); font-size: 1rem; margin-bottom: 30px; max-width: 500px; font-family: 'Fira Code', monospace; }
-
+        .hero-text p { color: var(--text-muted); font-size: 1rem; margin-bottom: 30px; max-width: 500px; }
+        
         .btn { 
             display: inline-block; padding: 12px 28px; 
             background: transparent; color: var(--primary); 
             border: 1px solid var(--primary); border-radius: 5px; 
-            font-family: 'Fira Code', monospace; font-weight: 600; 
-            transition: 0.3s; cursor: pointer; font-size: 1rem;
+            font-weight: 600; transition: 0.3s; cursor: pointer; font-size: 1rem;
             box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
         }
-        .btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary-glow); }
+        .btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 30px var(--primary); }
 
         .hero-image { flex: 1; display: flex; justify-content: center; position: relative; }
         .hero-image img { 
             width: 300px; height: 300px; object-fit: cover; 
             border-radius: 10px; border: 2px solid var(--primary); 
-            box-shadow: 0 0 30px var(--primary-glow);
-            filter: grayscale(100%) contrast(120%); /* ছবিতে হ্যাকার লুক */
+            box-shadow: 0 0 30px var(--primary);
+            filter: grayscale(100%) contrast(120%);
             transition: 0.5s;
         }
-        .hero-image img:hover { filter: grayscale(0%) contrast(100%); box-shadow: 0 0 50px var(--primary-glow); }
+        .hero-image img:hover { filter: grayscale(0%) contrast(100%); box-shadow: 0 0 60px var(--primary); }
 
         /* =========================================
-           STATS / SYSTEM STATUS
+           LIVE LOGS SECTION
            ========================================= */
-        .stats-section {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-            padding: 40px 8%; background: rgba(15, 23, 42, 0.5); 
-            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-            text-align: center;
+        .logs-container {
+            padding: 30px 8%; background: #000; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            font-family: 'Fira Code', monospace; font-size: 0.85rem;
         }
-        .stat-box { border: 1px solid var(--border); padding: 20px; border-radius: 10px; background: #000; }
-        .stat-box h3 { font-size: 2.5rem; color: var(--primary); font-family: 'Fira Code', monospace; margin-bottom: 5px; }
-        .stat-box p { color: var(--text-muted); font-size: 0.9rem; font-family: 'Fira Code', monospace; text-transform: uppercase; letter-spacing: 1px; }
+        .logs-header { color: #fff; margin-bottom: 10px; font-size: 1rem; display: flex; justify-content: space-between; }
+        .logs-header span { color: var(--secondary); animation: flash 1s infinite alternate; }
+        #log-output { color: var(--primary); height: 100px; overflow-y: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+        #log-output div { margin-bottom: 3px; }
 
         /* =========================================
-           FOOTER (আপনার আগের ফুটার)
+           FOOTER
            ========================================= */
-        footer { background: #000; border-top: 1px solid var(--border); padding: 20px 5% 15px; margin-top: 20px; font-size: 0.8rem; }
+        footer { background: #000; border-top: 1px solid var(--border); padding: 20px 5% 15px; font-size: 0.8rem; }
         .footer-container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; text-align: left; }
         .footer-brand { flex: 1; min-width: 200px; }
         .footer-brand img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); margin-bottom: 8px; }
-        .footer-brand h3 { color: #fff; font-size: 1.1rem; margin-bottom: 3px; font-family: 'Fira Code', monospace;}
+        .footer-brand h3 { color: #fff; font-size: 1.1rem; margin-bottom: 3px; }
         .footer-brand p { color: var(--text-muted); font-size: 0.8rem; max-width: 220px; line-height: 1.4; }
         .footer-links { flex: 1; min-width: 120px; }
-        .footer-links h4, .footer-social h4 { color: #fff; margin-bottom: 10px; font-size: 1rem; font-family: 'Fira Code', monospace;}
+        .footer-links h4, .footer-social h4 { color: #fff; margin-bottom: 10px; font-size: 1rem; }
         .footer-links ul { list-style: none; }
         .footer-links ul li { margin-bottom: 6px; }
-        .footer-links ul a { color: var(--text-muted); font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; font-family: 'Fira Code', monospace;}
+        .footer-links ul a { color: var(--text-muted); font-size: 0.8rem; transition: 0.3s; }
         .footer-links ul a:hover { color: var(--primary); }
-        .footer-links ul a svg { width: 14px; height: 14px; }
         .footer-social { flex: 1; min-width: 160px; }
         .social-icons { display: flex; gap: 8px; margin-bottom: 15px; }
         .social-icons a { display: flex; justify-content: center; align-items: center; width: 35px; height: 35px; background: #0f172a; color: var(--primary); border-radius: 5px; border: 1px solid var(--border); transition: 0.3s; }
-        .social-icons a:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); transform: translateY(-3px); }
+        .social-icons a:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); transform: translateY(-3px); }
         .social-icons a svg { width: 16px; height: 16px; }
-        .call-btn { display: inline-flex; align-items: center; justify-content: center; background: #0f172a; border: 1px solid var(--primary); color: var(--primary); padding: 0 15px; height: 35px; border-radius: 5px; font-weight: 600; font-size: 0.85rem; transition: 0.3s; width: 100%; font-family: 'Fira Code', monospace;}
-        .call-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary-glow); }
-        .footer-bottom { text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-family: 'Fira Code', monospace;}
+        .call-btn { display: inline-flex; align-items: center; justify-content: center; background: #0f172a; border: 1px solid var(--primary); color: var(--primary); padding: 0 15px; height: 35px; border-radius: 5px; font-weight: 600; font-size: 0.85rem; transition: 0.3s; width: 100%; }
+        .call-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
+        .footer-bottom { text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
         .dev-text { color: var(--primary); font-weight: 600; }
 
-        /* =========================================
-           ANIMATIONS & MOBILE RESPONSIVE
-           ========================================= */
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink { 50% { border-color: transparent } }
+        @keyframes blink { 50% { opacity: 0; } }
 
+        /* =========================================
+           MOBILE RESPONSIVE
+           ========================================= */
         @media (max-width: 900px) {
-            .hero-text h1 { font-size: 2.8rem; }
+            .glitch-text { font-size: 2.8rem; }
             .hero-image img { width: 250px; height: 250px; }
         }
 
@@ -162,7 +161,7 @@
             .hamburger { display: flex; }
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
-                background: rgba(0, 0, 0, 0.95); flex-direction: column; justify-content: center; align-items: center;
+                background: rgba(0, 0, 0, 0.98); flex-direction: column; justify-content: center; align-items: center;
                 transition: 0.4s ease; border-left: 1px solid var(--primary); z-index: 999;
             }
             .nav-links.active { right: 0; }
@@ -170,10 +169,9 @@
             .hamburger.active span:nth-child(2) { opacity: 0; }
             .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
             
-            .hero { flex-direction: column-reverse; text-align: center; padding: 40px 5%; gap: 30px; min-height: auto; }
+            .hero { flex-direction: column-reverse; text-align: center; padding: 30px 5%; gap: 30px; }
             .hero-text p { margin: 0 auto 30px auto; }
-            .terminal-body { font-size: 0.9rem; text-align: left; }
-            .stats-section { grid-template-columns: 1fr; gap: 15px; }
+            .terminal-body { text-align: left; }
             
             .footer-container { flex-direction: row; flex-wrap: wrap; justify-content: space-between; text-align: left; gap: 20px; }
             .footer-brand { flex: 100%; text-align: center; margin-bottom: 10px; }
@@ -186,6 +184,11 @@
 </head>
 <body>
 
+    <!-- ওয়ার্নিং ব্যানার -->
+    <div class="warning-banner">
+        ⚠️ UNAUTHORIZED ACCESS IS STRICTLY PROHIBITED ⚠️
+    </div>
+
     <!-- ম্যাট্রিক্স ব্যাকগ্রাউন্ড -->
     <canvas id="matrixCanvas"></canvas>
 
@@ -193,13 +196,13 @@
     <nav class="navbar">
         <div class="logo">
             <img src="logo.jpg" alt="FR Logo" class="logo-img">
-            <span>Foysal_Raja</span>
+            <span>root@foysalraja</span>
         </div>
         <ul class="nav-links" id="navLinks">
             <li><a href="#" class="active">./home</a></li>
             <li><a href="#">./about</a></li>
             <li><a href="#">./services</a></li>
-            <li><a href="#">./games</a></li>
+            <li><a href="#">./payloads</a></li>
             <li><a href="#">./contact</a></li>
         </ul>
         <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
@@ -208,21 +211,20 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-text">
-            <!-- টার্মিনাল উইন্ডো -->
+            
             <div class="terminal-window">
                 <div class="terminal-header">
                     <div class="dot red"></div>
                     <div class="dot yellow"></div>
                     <div class="dot green"></div>
                 </div>
-                <div class="terminal-body">
-                    <div class="command">root@foysal:~# whoami</div>
-                    <div class="typewriter">Frontend Developer & Cyber Enthusiast</div>
+                <div class="terminal-body" id="terminal-output">
+                    <!-- জাভাস্ক্রিপ্ট দিয়ে অটো-টাইপ হবে -->
                 </div>
             </div>
 
-            <h1>System <span class="highlight">Admin</span></h1>
-            <p>Accessing secure server... Connection established. I build secure, blazing-fast web applications and interactive experiences.</p>
+            <h1 class="glitch-text" data-text="System Admin">System Admin</h1>
+            <p style="margin-top: 20px;">Accessing secure server... Connection established. I build secure, blazing-fast web applications and interactive experiences.</p>
             
             <a href="#" class="btn">Initialize Connection</a>
         </div>
@@ -231,19 +233,15 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="stat-box">
-            <h3>[15+]</h3>
-            <p>Nodes Secured</p>
+    <!-- লাইভ লগ সেকশন -->
+    <section class="logs-container">
+        <div class="logs-header">
+            <span>[ SYSTEM LOGS ]</span>
+            <span>● REC</span>
         </div>
-        <div class="stat-box">
-            <h3>[100%]</h3>
-            <p>Uptime</p>
-        </div>
-        <div class="stat-box">
-            <h3>[AES-256]</h3>
-            <p>Encryption</p>
+        <div id="log-output">
+            <div>> Initializing kernel...</div>
+            <div>> Loading modules...</div>
         </div>
     </section>
 
@@ -285,7 +283,11 @@
 
     <!-- Scripts -->
     <script>
-        // ১. হ্যামবার্গার মেনু
+        // কনসোল আর্ট (F12 চাপলে দেখা যাবে)
+        console.log("%c SYSTEM BREACHED ", "color: #ff003c; font-size: 30px; font-weight: bold; background: #000; padding: 10px;");
+        console.log("%c Welcome to Foysal Raja's Server.", "color: #00ff41; font-size: 16px;");
+
+        // হ্যামবার্গার মেনু
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
         hamburger.addEventListener('click', () => { 
@@ -293,47 +295,98 @@
             navLinks.classList.toggle('active'); 
         });
 
-        // ২. ম্যাট্রিক্স রেইন ইফেক্ট (Matrix Code Rain)
+        // ম্যাট্রিক্স রেইন (Matrix Effect)
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
-        
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
         const fontSize = 16;
         const columns = canvas.width / fontSize;
         const drops = [];
-
-        for (let x = 0; x < columns; x++) {
-            drops[x] = 1; 
-        }
+        for (let x = 0; x < columns; x++) drops[x] = 1;
 
         function drawMatrix() {
-            // হালকা কালো ব্যাকগ্রাউন্ড (ট্রেইল তৈরি করার জন্য)
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#00ff41'; // ম্যাট্রিক্স গ্রিন
+            ctx.fillStyle = '#00ff41';
             ctx.font = fontSize + 'px monospace';
-
             for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            const text = letters.charAt(Math.floor(Math.random() * letters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+    setInterval(drawMatrix, 50);
+
+    window.addEventListener('resize', () => { 
+        canvas.width = window.innerWidth; 
+        canvas.height = window.innerHeight; 
+    });
+
+    // টার্মিনাল অটো-টাইপিং ইফেক্ট
+    const terminalOutput = document.getElementById('terminal-output');
+    const lines = [
+        "root@foysalraja:~# whoami",
+        "Foysal Raja - Frontend Developer",
+        "root@foysalraja:~# sudo apt-get install skills",
+        "Installing... [OK]",
+        "root@foysalraja:~# status",
+        "System Ready. Awaiting input... _"
+    ];
+    let lineIndex = 0;
+    let charIndex = 0;
+
+    function typeTerminal() {
+        if (lineIndex < lines.length) {
+            if (charIndex < lines[lineIndex].length) {
+                terminalOutput.innerHTML = terminalOutput.innerHTML.replace('<span class="cursor"></span>', '');
+                terminalOutput.innerHTML += lines[lineIndex].charAt(charIndex);
+                terminalOutput.innerHTML += '<span class="cursor"></span>';
+                charIndex++;
+                setTimeout(typeTerminal, 50);
+            } else {
+                terminalOutput.innerHTML = terminalOutput.innerHTML.replace('<span class="cursor"></span>', '');
+                terminalOutput.innerHTML += "<br>";
+                lineIndex++;
+                charIndex = 0;
+                setTimeout(typeTerminal, 500);
             }
         }
-        setInterval(drawMatrix, 50);
+    }
+    setTimeout(typeTerminal, 1000);
 
-        // রিসাইজ করলে ক্যানভাস ঠিক করা
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-    </script>
+    // লাইভ হ্যাকিং লগ আপডেট
+    const logOutput = document.getElementById('log-output');
+    const fakeLogs = [
+        "IP 192.168.1.1 traced...",
+        "Bypassing firewall... [SUCCESS]",
+        "Downloading encrypted data...",
+        "Connecting to dark web node...",
+        "Password hash cracked: ******",
+        "Port 8080 opened.",
+        "Analyzing network traffic...",
+        "SQL Injection failed. Retrying...",
+        "Root access granted.",
+        "Data transfer 100% complete."
+    ];
+
+    function addLog() {
+        const newLog = document.createElement('div');
+        const randomLog = fakeLogs[Math.floor(Math.random() * fakeLogs.length)];
+        newLog.textContent = "> " + randomLog;
+        logOutput.appendChild(newLog);
+        
+        // ম্যাক্সিমাম ৫টি লগ দেখাবে
+        if (logOutput.children.length > 5) {
+            logOutput.removeChild(logOutput.firstChild);
+        }
+    }
+    setInterval(addLog, 2500);
+</script>
 </body>
-</html>
+</html>        
