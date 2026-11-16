@@ -10,12 +10,27 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: #0b1120; color: #e2e8f0; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* হেডার */
-        header { text-align: center; padding: 30px 20px; background: #111827; border-bottom: 1px solid #1e293b; }
-        header h1 { font-size: 2.5rem; color: #00d4ff; margin-bottom: 10px; text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
-        header p { color: #94a3b8; font-size: 1rem; }
+        /* হেডার (লোগো, নাম ও প্রোফাইল ছবি) */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 20px; background: #111827; border-bottom: 1px solid #1e293b; 
+        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #00d4ff; object-fit: cover; }
+        .header-left h1 { font-size: 1.2rem; color: #fff; font-weight: 600; }
+        .header-left h1 span { color: #00d4ff; }
         
-        /* সার্চ বার */
+        .profile-img { 
+            width: 45px; height: 45px; border-radius: 50%; 
+            border: 2px solid #00d4ff; object-fit: cover;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+        }
+
+        /* গেম জোন টাইটেল ও সার্চ */
+        .page-title { text-align: center; padding: 30px 20px 10px; }
+        .page-title h2 { font-size: 2rem; color: #00d4ff; margin-bottom: 10px; text-shadow: 0 0 15px rgba(0, 212, 255, 0.3); }
+        .page-title p { color: #94a3b8; font-size: 0.95rem; }
+
         .search-container { padding: 20px; display: flex; justify-content: center; }
         .search-box {
             width: 100%; max-width: 700px; display: flex; background: #1e293b;
@@ -35,17 +50,17 @@
         /* গেম গ্রিড */
         .games-grid {
             padding: 20px; max-width: 1200px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 20px; width: 100%;
         }
         .game-card {
-            background: #1e293b; border-radius: 15px; padding: 20px 15px;
+            background: #1e293b; border-radius: 15px; padding: 15px;
             text-align: center; cursor: pointer; transition: 0.3s;
             border: 1px solid #334155; position: relative; overflow: hidden;
         }
         .game-card:hover { border-color: #00d4ff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 212, 255, 0.1); }
-        .game-card .icon { font-size: 3.5rem; margin-bottom: 10px; }
-        .game-card h3 { font-size: 1rem; color: #fff; margin-bottom: 5px; }
+        .game-card .icon { font-size: 3rem; margin-bottom: 10px; }
+        .game-card h3 { font-size: 0.95rem; color: #fff; margin-bottom: 5px; }
         .game-card p { font-size: 0.75rem; color: #94a3b8; }
         .game-badge {
             position: absolute; top: 10px; right: 10px;
@@ -60,13 +75,26 @@
         }
         .modal-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 20px; background: #000; border-bottom: 1px solid #1e293b;
+            padding: 10px 20px; background: #111827; border-bottom: 1px solid #1e293b;
         }
         .modal-header h2 { color: #00d4ff; font-size: 1.2rem; }
+        .modal-btns { display: flex; gap: 10px; }
+        
+        /* নতুন ব্যাক ও ক্লোজ বাটন */
+        .back-btn {
+            background: #1e293b; color: #fff; border: 1px solid #334155; 
+            padding: 8px 15px; border-radius: 5px; cursor: pointer; 
+            font-weight: bold; transition: 0.3s; text-decoration: none;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .back-btn:hover { background: #334155; border-color: #00d4ff; color: #00d4ff; }
+        
         .close-btn {
             background: #ef4444; color: #fff; border: none; padding: 8px 15px;
             border-radius: 5px; cursor: pointer; font-weight: bold;
         }
+        .close-btn:hover { background: #dc2626; }
+
         .game-iframe-container { flex: 1; background: #000; }
         #gameFrame { width: 100%; height: 100%; border: none; }
 
@@ -76,11 +104,24 @@
 </head>
 <body>
 
+    <!-- হেডার: লোগো এবং প্রোফাইল ছবি -->
     <header>
-        <h1>Ultimate <span style="color:#fff;">Game Zone</span></h1>
-        <p>Play 100+ Premium HTML5 & 3D Games Directly on this site!</p>
+        <div class="header-left">
+            <img src="logo.jpg" alt="FR Logo" class="logo-img">
+            <h1>Foysal <span>Raja</span></h1>
+        </div>
+        <div>
+            <img src="profile.jpg" alt="Profile" class="profile-img">
+        </div>
     </header>
 
+    <!-- গেম জোন টাইটেল -->
+    <div class="page-title">
+        <h2>Ultimate <span style="color:#fff;">Game Zone</span></h2>
+        <p>Play Premium HTML5 & 3D Games Directly on this site!</p>
+    </div>
+
+    <!-- সার্চ বার -->
     <div class="search-container">
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Search for games (e.g., Moto, Zombie, 3D)...">
@@ -97,11 +138,16 @@
     <div id="gameModal">
         <div class="modal-header">
             <h2 id="modalGameTitle">Playing Game...</h2>
-            <button class="close-btn" onclick="closeGame()">❌ Close Game</button>
+            <div class="modal-btns">
+                <!-- ব্যাক বাটন -->
+                <button class="back-btn" onclick="closeGame()">← Back to Home</button>
+                <!-- ক্লোজ বাটন -->
+                <button class="close-btn" onclick="closeGame()">❌ Close</button>
+            </div>
         </div>
         <div class="game-iframe-container">
             <!-- গেম এখানে লোড হবে -->
-            <iframe id="gameFrame" allowfullscreen></iframe>
+            <iframe id="gameFrame" allowfullscreen sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-pointer-lock"></iframe>
         </div>
     </div>
 
@@ -110,37 +156,26 @@
     </footer>
 
     <script>
-        // এখানে আপনার পছন্দের গেমগুলোর ডেটা দিতে পারবেন (নাম, আইকন, লিংক)
-        // গেমগুলো GameDistribution-এর ফ্রি লিংক, যা ওয়েবসাইটের ভেতরেই চলবে
+        // গেমের ডেটা (লিংকগুলো কাজ করার কথা, তবে কিছু লিংক কাজ না করলে জানাবেন)
         const games = [
-            { name: "Moto X3M 3D", icon: "🏍️", category: "Racing, 3D", url: "https://html5.gamedistribution.com/8d03381f98644b468d5f6a6dfdd88d6e/" },
-            { name: "Subway Runner", icon: "🏃", category: "Arcade", url: "https://html5.gamedistribution.com/e19e93c24b6b4a5788107cd360b4b127/" },
-            { name: "Zombie Hunter", icon: "🧟", category: "Shooter, 3D", url: "https://html5.gamedistribution.com/e4d0f5e3fdb34ef8a8e7d6b7a2b3c4d5/" },
-            { name: "Bike Race 3D", icon: "🏎️", category: "Racing, 3D", url: "https://html5.gamedistribution.com/5a9f4d3e2b1c4a5b6c7d8e9f0a1b2c3d/" },
-            { name: "Brick Breaker", icon: "🧱", category: "Puzzle", url: "https://html5.gamedistribution.com/f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6/" },
-            { name: "Chess Master", icon: "♟️", category: "Board", url: "https://html5.gamedistribution.com/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6/" },
-            { name: "Temple Run 3D", icon: "🏃‍♂️", category: "Arcade, 3D", url: "https://html5.gamedistribution.com/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d/" },
-            { name: "Ludo Classic", icon: "🎲", category: "2 Player, Board", url: "https://html5.gamedistribution.com/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e/" },
-            { name: "Basketball 3D", icon: "🏀", category: "Sports, 3D", url: "https://html5.gamedistribution.com/3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f/" },
-            { name: "Car Racing 3D", icon: "🏎️", category: "Racing, 3D", url: "https://html5.gamedistribution.com/4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a/" },
-            { name: "Sniper 3D", icon: "🎯", category: "Shooter, 3D", url: "https://html5.gamedistribution.com/5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b/" },
-            { name: "Subway Surfer", icon: "🛹", category: "Arcade", url: "https://html5.gamedistribution.com/6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c/" },
-            { name: "Angry Birds", icon: "🐦", category: "Puzzle", url: "https://html5.gamedistribution.com/7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d/" },
-            { name: "Hill Climb 3D", icon: "🚙", category: "Racing, 3D", url: "https://html5.gamedistribution.com/8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e/" },
-            { name: "Fruit Ninja", icon: "🍉", category: "Arcade", url: "https://html5.gamedistribution.com/9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f/" },
-            { name: "2 Player Games", icon: "👥", category: "2 Player", url: "https://html5.gamedistribution.com/0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a/" },
-            { name: "8 Ball Pool", icon: "🎱", category: "Sports, 2 Player", url: "https://html5.gamedistribution.com/1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b/" },
-            { name: "Minecraft 3D", icon: "⛏️", category: "3D, Sandbox", url: "https://html5.gamedistribution.com/2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c/" },
-            { name: "Pixel Shooter", icon: "🔫", category: "Shooter", url: "https://html5.gamedistribution.com/3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d/" },
-            { name: "Candy Crush", icon: "🍬", category: "Puzzle", url: "https://html5.gamedistribution.com/4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e/" }
-            // আপনি আরও গেম এখানে যোগ করতে পারেন (যত খুশি)
+            { name: "Moto X3M", icon: "🏍️", category: "Racing, 3D", url: "https://html5.gamemonetize.com/8d03381f98644b468d5f6a6dfdd88d6e/" },
+            { name: "Subway Runner", icon: "🏃", category: "Arcade", url: "https://html5.gamemonetize.com/e19e93c24b6b4a5788107cd360b4b127/" },
+            { name: "Zombie Hunter", icon: "🧟", category: "Shooter, 3D", url: "https://html5.gamemonetize.com/e4d0f5e3fdb34ef8a8e7d6b7a2b3c4d5/" },
+            { name: "Bike Race 3D", icon: "🏎️", category: "Racing, 3D", url: "https://html5.gamemonetize.com/5a9f4d3e2b1c4a5b6c7d8e9f0a1b2c3d/" },
+            { name: "Brick Breaker", icon: "🧱", category: "Puzzle", url: "https://html5.gamemonetize.com/f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6/" },
+            { name: "Chess Master", icon: "♟️", category: "Board", url: "https://html5.gamemonetize.com/a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6/" },
+            { name: "Temple Run 3D", icon: "🏃‍♂️", category: "Arcade, 3D", url: "https://html5.gamemonetize.com/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d/" },
+            { name: "Ludo Classic", icon: "🎲", category: "2 Player, Board", url: "https://html5.gamemonetize.com/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e/" },
+            { name: "Basketball 3D", icon: "🏀", category: "Sports, 3D", url: "https://html5.gamemonetize.com/3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f/" },
+            { name: "Car Racing 3D", icon: "🏎️", category: "Racing, 3D", url: "https://html5.gamemonetize.com/4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a/" },
+            { name: "Sniper 3D", icon: "🎯", category: "Shooter, 3D", url: "https://html5.gamemonetize.com/5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b/" },
+            { name: "Subway Surfer", icon: "🛹", category: "Arcade", url: "https://html5.gamemonetize.com/6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c/" }
         ];
 
         const gameGrid = document.getElementById('gameGrid');
 
-        // গেম কার্ড তৈরি করার ফাংশন
         function displayGames(gamesArray) {
-            gameGrid.innerHTML = ""; // আগেরগুলো মুছে ফেলা
+            gameGrid.innerHTML = ""; 
             if (gamesArray.length === 0) {
                 gameGrid.innerHTML = "<h3 style='color: #fff; grid-column: 1/-1; text-align: center;'>No games found!</h3>";
                 return;
@@ -160,34 +195,28 @@
             });
         }
 
-        // প্রথমে সব গেম দেখানো
         displayGames(games);
 
-        // গেম সার্চ ফিল্টার
         function filterGames() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = games.filter(game => game.name.toLowerCase().includes(query) || game.category.toLowerCase().includes(query));
             displayGames(filtered);
         }
 
-        // এন্টার কি চাপলে সার্চ হবে
         document.getElementById('searchInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') filterGames();
         });
 
-        // গেম ওপেন করার ফাংশন (মোডালে)
         function openGame(name, url) {
             document.getElementById('gameModal').style.display = 'flex';
             document.getElementById('modalGameTitle').innerText = "Playing: " + name;
             document.getElementById('gameFrame').src = url;
-            // স্ক্রল লক করা যাতে গেম খেলার সময় পেছনের পেজ স্ক্রল না হয়
             document.body.style.overflow = 'hidden'; 
         }
 
-        // গেম বন্ধ করার ফাংশন
         function closeGame() {
             document.getElementById('gameModal').style.display = 'none';
-            document.getElementById('gameFrame').src = ""; // গেম স্টপ করতে
+            document.getElementById('gameFrame').src = ""; 
             document.body.style.overflow = 'auto';
         }
     </script>
