@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2048 | Foysal Raja</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .grid-2048 { display: grid; grid-template-columns: repeat(4, 70px); gap: 10px; background: #1e293b; padding: 10px; border-radius: 10px; margin: 20px auto; justify-content: center; }
+        .cell-2048 { width: 70px; height: 70px; background: #0b1120; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; color: #fff; transition: 0.2s; }
+        .cell-2048[data-val="2"] { background: #e2e8f0; color: #000; }
+        .cell-2048[data-val="4"] { background: #cbd5e1; color: #000; }
+        .cell-2048[data-val="8"] { background: #f59e0b; }
+        .cell-2048[data-val="16"] { background: #f97316; }
+        .cell-2048[data-val="32"] { background: #ef4444; }
+        .cell-2048[data-val="64"] { background: #dc2626; }
+        .cell-2048[data-val="128"] { background: #8b5cf6; font-size: 1.2rem; }
+        .cell-2048[data-val="256"] { background: #7c3aed; font-size: 1.2rem; }
+        .cell-2048[data-val="512"] { background: #6d28d9; font-size: 1.2rem; }
+        .cell-2048[data-val="1024"] { background: #5b21b6; font-size: 1rem; }
+        .cell-2048[data-val="2048"] { background: #00d4ff; color: #000; font-size: 1rem; box-shadow: 0 0 15px #00d4ff;}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="logo.jpg" alt="FR Logo" class="logo-img">
+            <span>Foysal Raja</span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="game.html" class="active">Games</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+
+    <div style="padding: 20px 5%; max-width: 600px; margin: 0 auto; text-align: center;">
+        <a href="game.html" style="color: #00d4ff; text-decoration: none; display: block; margin-bottom: 20px; text-align: left;">← Back to Games</a>
+        
+        <h2 style="color: #fff; margin-bottom: 10px;">2048 🔢</h2>
+        <div style="font-size: 1.2rem; margin-bottom: 10px; color: #fff;">Score: <span id="score">0</span> | Best: <span id="bestScore">0</span></div>
+        
+        <div class="grid-2048" id="grid"></div>
+
+        <button class="btn" onclick="initGame()" style="margin-top: 15px;">Restart Game</button>
+        <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 10px;">(Use Arrow Keys or Swipe)</p>
+    </div>
+
+    <!-- Victory Modal -->
+    <div class="victory-modal" id="victoryModal">
+        <div class="victory-content">
+            <h2 id="victoryTitle">Congratulations! 🎉</h2>
+            <p id="victoryText">You Won!</p>
+            <button class="btn" onclick="playAgainAction()">Play Again</button>
+        </div>
+    </div>
+
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
+            document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); }); });
+        }
+
+        let board = [], score = 0, bestScore = localStorage.getItem('best2048Score') || 0;
+        const gridElement = document.getElementById('grid');
+        document.getElementById('bestScore').innerText = bestScore;
+
+        function playSound(type) {
+            if(type === 'click') document.getElementById('clickSound').play().catch(e=>{});
+            if(type === 'win') document.getElementById('winSound').play().catch(e=>{});
+        }
+
+        function initGame() {
+            playSound('click');
+            board = Array(16).fill(0); score = 0;
+            document.getElementById('score').innerText = score;
+            addRandom(); addRandom();
+            render();
+        }
+
+        function addRandom() {
+            let empty = board.map((v, i) => v === 0 ? i : null).filter(v => v !== null);
+            if (empty.length === 0) return;
+            let randIdx = empty[Math.floor(Math.random() * empty.length)];
+            board[randIdx] = Math.random() < 0.9 ? 2 : 4;
+        }
+
+        function render() {
+            gridElement.innerHTML = '';
+            board.forEach(val => {
+                const cell = document.createElement('div');
+                cell.className = 'cell-2048';
+                if (val !== 0) {
+                    cell.setAttribute('data-val', val);
+                    cell.innerText = val;
+                }
+                gridElement.appendChild(cell);
+            });
+        }
+
+        function move(direction) {
+            let moved = false;
+            let oldBoard = [...board];
+
+            if (direction === 'left' || direction === 'right') {
+                for (let i = 0; i < 16; i += 4) {
+                    let row = [board[i], board[i+1], board[i+2], board[i+3]];
+                    row = row.filter(v => v !== 0);
+                    if (direction === 'right') row.reverse();
+                    for (let j = 0; j < row.length - 1; j++) {
+                        if (row[j] === row[j+1]) { row[j] *= 2; score += row[j]; row.splice(j+1, 1); }
+                    }
+                    if (direction === 'right') row.reverse();
+                    while (row.length < 4) { direction === 'left' ? row.push(0) : row.unshift(0); }
+                    board[i] = row[0]; board[i+1] = row[1]; board[i+2] = row[2]; board[i+3] = row[3];
+                }
+            } else if (direction === 'up' || direction === 'down') {
+                for (let i = 0; i < 4; i++) {
+                    let col = [board[i], board[i+4], board[i+8], board[i+12]];
+                    col = col.filter(v => v !== 0);
+                    if (direction === 'down') col.reverse();
+                    for (let j = 0; j < col.length - 1; j++) {
+                        if (col[j] === col[j+1]) { col[j] *= 2; score += col[j]; col.splice(j+1, 1); }
+                    }
+                    if (direction === 'down') col.reverse();
+                    while (col.length < 4) { direction === 'up' ? col.push(0) : col.unshift(0); }
+                    board[i] = col[0]; board[i+4] = col[1]; board[i+8] = col[2]; board[i+12] = col[3];
+                }
+            }
+
+            if (JSON.stringify(oldBoard) !== JSON.stringify(board)) {
+                addRandom(); render();
+                document.getElementById('score').innerText = score;
+                if (score > bestScore) { bestScore = score; localStorage.setItem('best2048Score', bestScore); document.getElementById('bestScore').innerText = bestScore; }
+                if (board.includes(2048)) { playSound('win'); showVictory("You Win! 🎉", "You reached 2048!"); }
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+                if (e.key === 'ArrowUp') move('up');
+                if (e.key === 'ArrowDown') move('down');
+                if (e.key === 'ArrowLeft') move('left');
+                if (e.key === 'ArrowRight') move('right');
+            }
+        });
+
+        let touchStartX = 0, touchStartY = 0;
+        gridElement.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; }, {passive: true});
+        gridElement.addEventListener('touchend', e => {
+            let touchEndX = e.changedTouches[0].clientX, touchEndY = e.changedTouches[0].clientY;
+            let dx = touchEndX - touchStartX, dy = touchEndY - touchStartY;
+            if (Math.abs(dx) > Math.abs(dy)) { if (Math.abs(dx) > 30) { move(dx > 0 ? 'right' : 'left'); } } 
+            else { if (Math.abs(dy) > 30) { move(dy > 0 ? 'down' : 'up'); } }
+        }, {passive: true});
+
+        function showVictory(title, text) {
+            document.getElementById("victoryTitle").innerText = title;
+            document.getElementById("victoryText").innerText = text;
+            document.getElementById("victoryModal").classList.add("active");
+        }
+
+        function playAgainAction() {
+            playSound('click');
+            document.getElementById("victoryModal").classList.remove("active");
+            initGame();
+        }
+
+        initGame();
+    </script>
+</body>
+</html>

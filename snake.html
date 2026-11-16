@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Snake Game | Foysal Raja</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* শুধু এই পেজের জন্য কিছু বাড়তি স্টাইল */
+        .ctrl-btn {
+            width: 70px; height: 70px; font-size: 2rem; background: #1e293b; color: #00d4ff; 
+            border: 2px solid #00d4ff; border-radius: 15px; cursor: pointer; user-select: none;
+            transition: 0.1s;
+        }
+        .ctrl-btn:active { background: #00d4ff; color: #0b1120; transform: scale(0.95); }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">
+        <img src="logo.jpg" alt="FR Logo" class="logo-img">
+        <span>Foysal Raja</span>
+    </div>
+    
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="game.html"class="active">Games</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+    <!-- হ্যামবার্গার মেনু আইকন -->
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
+    <div style="padding: 20px 5%; max-width: 600px; margin: 0 auto; text-align: center;">
+        <a href="game.html" style="color: #00d4ff; text-decoration: none; display: block; margin-bottom: 20px; text-align: left;">← Back to Games</a>
+        
+        <h2 style="color: #fff; margin-bottom: 10px;">Snake Game 🐍</h2>
+        <div style="font-size: 1.2rem; margin-bottom: 10px; color: #fff;">Score: <span id="score">0</span></div>
+        
+        <div style="display: flex; justify-content: center;">
+            <canvas id="gameCanvas" width="300" height="300" style="background: #0b1120; border: 3px solid #00d4ff; border-radius: 10px; touch-action: none;"></canvas>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <button onclick="setDir('UP')" class="ctrl-btn">⬆️</button>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="setDir('LEFT')" class="ctrl-btn">⬅️</button>
+                <button onclick="setDir('DOWN')" class="ctrl-btn">⬇️</button>
+                <button onclick="setDir('RIGHT')" class="ctrl-btn">➡️</button>
+            </div>
+        </div>
+        <br>
+        <button class="btn" onclick="startGame()" id="startBtn" style="margin-top: 15px;">Start Game</button>
+    </div>
+
+    <!-- Victory Modal -->
+    <div class="victory-modal" id="victoryModal">
+        <div class="victory-content">
+            <h2 id="victoryTitle">Game Over!</h2>
+            <p id="victoryText">Your Score: 0</p>
+            <button class="btn" onclick="playAgainAction()">Play Again</button>
+        </div>
+    </div>
+
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const scoreElement = document.getElementById("score");
+        let box = 15, snake = [], direction = "RIGHT", nextDirection = "RIGHT", food = {}, score = 0, gameInterval, isPlaying = false;
+
+        function playSound(type) {
+            if(type === 'click') document.getElementById('clickSound').play().catch(e=>{});
+            if(type === 'win') document.getElementById('winSound').play().catch(e=>{});
+        }
+
+        function startGame() {
+            if (isPlaying) return;
+            playSound('click');
+            isPlaying = true;
+            document.getElementById("startBtn").style.display = "none";
+            snake = [{ x: 5 * box, y: 5 * box }];
+            direction = "RIGHT"; nextDirection = "RIGHT"; score = 0; scoreElement.innerText = score;
+            generateFood();
+            gameInterval = setInterval(drawGame, 130);
+        }
+
+        function setDir(newDir) {
+            if (!isPlaying) return;
+            if (newDir === "UP" && direction !== "DOWN") nextDirection = "UP";
+            if (newDir === "DOWN" && direction !== "UP") nextDirection = "DOWN";
+            if (newDir === "LEFT" && direction !== "RIGHT") nextDirection = "LEFT";
+            if (newDir === "RIGHT" && direction !== "LEFT") nextDirection = "RIGHT";
+        }
+
+        function generateFood() {
+            food = { x: Math.floor(Math.random() * 18 + 1) * box, y: Math.floor(Math.random() * 18 + 1) * box };
+        }
+
+        function drawGame() {
+            direction = nextDirection;
+            ctx.fillStyle = "#0b1120"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ef4444"; ctx.fillRect(food.x, food.y, box, box);
+
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = (i === 0) ? "#00d4ff" : "#0ea5e9";
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
+            }
+
+            let snakeX = snake[0].x, snakeY = snake[0].y;
+            if (direction === "LEFT") snakeX -= box;
+            if (direction === "UP") snakeY -= box;
+            if (direction === "RIGHT") snakeX += box;
+            if (direction === "DOWN") snakeY += box;
+
+            if (snakeX === food.x && snakeY === food.y) {
+                score++; scoreElement.innerText = score; generateFood();
+            } else { snake.pop(); }
+
+            let newHead = { x: snakeX, y: snakeY };
+
+            if (snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
+                clearInterval(gameInterval); isPlaying = false;
+                playSound('win'); 
+                showVictory("Game Over!", "Your Score: " + score);
+                return;
+            }
+            snake.unshift(newHead);
+        }
+
+        function collision(head, array) {
+            for (let i = 1; i < array.length; i++) { if (head.x === array[i].x && head.y === array[i].y) return true; } return false;
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowUp") setDir("UP"); if (e.key === "ArrowDown") setDir("DOWN");
+            if (e.key === "ArrowLeft") setDir("LEFT"); if (e.key === "ArrowRight") setDir("RIGHT");
+        });
+
+        function showVictory(title, text) {
+            document.getElementById("victoryTitle").innerText = title;
+            document.getElementById("victoryText").innerText = text;
+            document.getElementById("victoryModal").classList.add("active");
+        }
+
+        function playAgainAction() {
+            playSound('click');
+            document.getElementById("victoryModal").classList.remove("active");
+            document.getElementById("startBtn").style.display = "inline-block";
+            document.getElementById("startBtn").innerText = "Play Again";
+        }
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+        }
+    </script>
+</body>
+</html>

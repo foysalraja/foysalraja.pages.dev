@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brick Breaker | Foysal Raja</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="logo.jpg" alt="FR Logo" class="logo-img">
+            <span>Foysal Raja</span>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="game.html" class="active">Games</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+
+    <div style="padding: 20px 5%; max-width: 600px; margin: 0 auto; text-align: center;">
+        <a href="game.html" style="color: #00d4ff; text-decoration: none; display: block; margin-bottom: 20px; text-align: left;">← Back to Games</a>
+        
+        <h2 style="color: #fff; margin-bottom: 10px;">Brick Breaker 🧱</h2>
+        <div style="font-size: 1.2rem; margin-bottom: 10px; color: #fff;">Score: <span id="score">0</span> | High Score: <span id="highScore">0</span></div>
+        
+        <div style="display: flex; justify-content: center;">
+            <canvas id="gameCanvas" width="300" height="400" style="background: #0b1120; border: 3px solid #00d4ff; border-radius: 10px; touch-action: none;"></canvas>
+        </div>
+
+        <br>
+        <button class="btn" onclick="startGame()" id="startBtn" style="margin-top: 15px;">Start Game</button>
+    </div>
+
+    <!-- Victory Modal -->
+    <div class="victory-modal" id="victoryModal">
+        <div class="victory-content">
+            <h2 id="victoryTitle">Congratulations! 🎉</h2>
+            <p id="victoryText">You Won!</p>
+            <button class="btn" onclick="playAgainAction()">Play Again</button>
+        </div>
+    </div>
+
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3"></audio>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
+            document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); }); });
+        }
+
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const scoreElement = document.getElementById("score");
+        const highScoreElement = document.getElementById("highScore");
+
+        let ballRadius = 8, x, y, dx, dy, paddleHeight = 10, paddleWidth = 75, paddleX, rightPressed = false, leftPressed = false;
+        let brickRowCount = 5, brickColumnCount = 5, brickWidth = 50, brickHeight = 20, brickPadding = 10, brickOffsetTop = 30, brickOffsetLeft = 20;
+        let bricks = []; let score = 0; let gameInterval; let isPlaying = false;
+        let highScore = localStorage.getItem('brickHighScore') || 0;
+        highScoreElement.innerText = highScore;
+
+        function playSound(type) {
+            if(type === 'click') document.getElementById('clickSound').play().catch(e=>{});
+            if(type === 'win') document.getElementById('winSound').play().catch(e=>{});
+        }
+
+        function startGame() {
+            if (isPlaying) return;
+            playSound('click');
+            isPlaying = true;
+            document.getElementById("startBtn").style.display = "none";
+            x = canvas.width / 2; y = canvas.height - 30; dx = 3; dy = -3; paddleX = (canvas.width - paddleWidth) / 2;
+            score = 0; scoreElement.innerText = score;
+            bricks = [];
+            for (let c = 0; c < brickColumnCount; c++) {
+                bricks[c] = [];
+                for (let r = 0; r < brickRowCount; r++) { bricks[c][r] = { x: 0, y: 0, status: 1 }; }
+            }
+            clearInterval(gameInterval);
+            gameInterval = setInterval(drawGame, 10);
+        }
+
+        document.addEventListener("keydown", (e) => { if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true; else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true; });
+        document.addEventListener("keyup", (e) => { if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false; else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false; });
+        
+        canvas.addEventListener("touchmove", (e) => {
+            let relativeX = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+            if (relativeX > 0 && relativeX < canvas.width) { paddleX = relativeX - paddleWidth / 2; }
+        }, {passive: true});
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath(); ctx.arc(x, y, ballRadius, 0, Math.PI * 2); ctx.fillStyle = "#00d4ff"; ctx.fill(); ctx.closePath();
+            ctx.beginPath(); ctx.rect(paddleX, canvas.height - paddleHeight - 5, paddleWidth, paddleHeight); ctx.fillStyle = "#8b5cf6"; ctx.fill(); ctx.closePath();
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    if (bricks[c][r].status === 1) {
+                        let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                        let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                        bricks[c][r].x = brickX; bricks[c][r].y = brickY;
+                        ctx.beginPath(); ctx.rect(brickX, brickY, brickWidth, brickHeight); ctx.fillStyle = "#ef4444"; ctx.fill(); ctx.closePath();
+                    }
+                }
+            }
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) { dx = -dx; }
+            if (y + dy < ballRadius) { dy = -dy; } 
+            else if (y + dy > canvas.height - ballRadius - paddleHeight - 5) {
+                if (x > paddleX && x < paddleX + paddleWidth) { dy = -dy; } 
+                else if (y + dy > canvas.height) {
+                    clearInterval(gameInterval); isPlaying = false;
+                    playSound('win');
+                    if(score > highScore) { highScore = score; localStorage.setItem('brickHighScore', highScore); }
+                    showVictory("Game Over!", "Your Score: " + score);
+                    return;
+                }
+            }
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    let b = bricks[c][r];
+                    if (b.status === 1) {
+                        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                            dy = -dy; b.status = 0; score++; scoreElement.innerText = score;
+                            if(score === brickRowCount * brickColumnCount) { 
+                                clearInterval(gameInterval); isPlaying = false; playSound('win'); 
+                                if(score > highScore) { highScore = score; localStorage.setItem('brickHighScore', highScore); highScoreElement.innerText = highScore;}
+                                showVictory("You Win! 🎉", "All bricks destroyed!"); return;
+                            }
+                        }
+                    }
+                }
+            }
+            if (rightPressed && paddleX < canvas.width - paddleWidth) { paddleX += 7; }
+            if (leftPressed && paddleX > 0) { paddleX -= 7; }
+            x += dx; y += dy;
+        }
+
+        function showVictory(title, text) {
+            document.getElementById("victoryTitle").innerText = title;
+            document.getElementById("victoryText").innerText = text;
+            document.getElementById("victoryModal").classList.add("active");
+        }
+
+        function playAgainAction() {
+            playSound('click');
+            document.getElementById("victoryModal").classList.remove("active");
+            document.getElementById("startBtn").style.display = "inline-block";
+            document.getElementById("startBtn").innerText = "Play Again";
+            highScoreElement.innerText = highScore;
+        }
+    </script>
+</body>
+</html>
