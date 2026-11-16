@@ -4,175 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Foysal Raja | SYSTEM OVERRIDE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
-        /* =========================================
-           ULTIMATE CYBERPUNK HACKER THEME
-           ========================================= */
         :root {
-            --bg: #020202;
-            --primary: #00ff41; /* Matrix Green */
-            --secondary: #ff003c; /* Alert Red */
-            --cyan: #00e5ff; /* Neon Cyan */
-            --text-main: #e2e8f0;
-            --text-muted: #64748b;
-            --border: #1a2a1a;
+            --bg: #050505;
+            --primary: #00ff41;
+            --secondary: #ff003c;
+            --cyan: #00ffff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Share Tech Mono', 'Fira Code', monospace; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Share Tech Mono', monospace; }
         body { background-color: var(--bg); color: var(--primary); overflow-x: hidden; position: relative; }
-        a { text-decoration: none; color: inherit; }
         
         /* ম্যাট্রিক্স ক্যানভাস */
-        #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; opacity: 0.15; pointer-events: none; }
-        
-        /* গ্লোবাল গ্রিড ওভারলে */
-        body::after {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px; z-index: -1; pointer-events: none;
-        }
+        #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.15; pointer-events: none; }
 
         /* =========================================
-           ENTRY WARNING (ভয়ংকর সতর্কবার্তা)
+           ENTRY WARNING SCREEN (ভয়ংকর সতর্কবার্তা)
            ========================================= */
         #warning-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95); z-index: 9999; display: flex;
             justify-content: center; align-items: center; flex-direction: column;
-            text-align: center; padding: 20px; backdrop-filter: blur(10px);
+            text-align: center; padding: 15px;
         }
         .warn-box {
-            border: 2px solid var(--secondary); padding: 40px; border-radius: 10px;
-            background: #000; box-shadow: 0 0 60px rgba(255,0,60,0.4);
-            max-width: 600px; animation: pulse-warn 1.5s infinite alternate;
-            position: relative; overflow: hidden;
+            border: 2px solid var(--secondary); padding: 30px 20px; border-radius: 10px;
+            background: #000; box-shadow: 0 0 50px rgba(255,0,60,0.5);
+            max-width: 500px; width: 100%;
         }
-        .warn-box::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
-            background: var(--secondary); animation: scanline 2s linear infinite;
-        }
-        .warn-box h1 { color: var(--secondary); font-size: 3rem; margin-bottom: 20px; text-shadow: 0 0 15px var(--secondary); }
-        .warn-box p { color: var(--primary); margin-bottom: 15px; font-size: 1.1rem; }
-        .warn-box .btn-danger {
-            background: var(--secondary); color: #fff; border: none; padding: 15px 30px;
+        .warn-box h1 { color: var(--secondary); font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--secondary); }
+        .warn-box p { color: var(--primary); margin-bottom: 15px; font-size: 1rem; }
+        .warn-box .highlight-red { color: var(--secondary); }
+        .warn-box .highlight-cyan { color: var(--cyan); }
+        
+        .btn-danger {
+            background: var(--secondary); color: #fff; border: 2px solid var(--secondary); padding: 15px 30px;
             font-size: 1.2rem; font-weight: bold; cursor: pointer; border-radius: 5px;
-            font-family: 'Share Tech Mono', monospace; margin-top: 20px;
-            animation: flash 1s infinite alternate;
+            font-family: 'Share Tech Mono', monospace; margin-top: 20px; width: 100%; transition: 0.3s;
         }
-        @keyframes pulse-warn { from { box-shadow: 0 0 20px rgba(255,0,60,0.2); } to { box-shadow: 0 0 80px rgba(255,0,60,0.7); } }
-        @keyframes scanline { 0% { top: 0; } 100% { top: 100%; } }
-        @keyframes flash { from { opacity: 1; } to { opacity: 0.5; } }
+        .btn-danger:hover { background: transparent; color: var(--secondary); box-shadow: 0 0 20px var(--secondary); }
 
         /* =========================================
-           MAIN LAYOUT
+           MAIN APP (মেইন ওয়েবসাইট)
            ========================================= */
         #main-app { display: none; flex-direction: column; min-height: 100vh; }
         
-        /* টপ নেভবার */
-        .top-bar {
-            background: #000; border-bottom: 1px solid var(--border);
-            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.8rem; color: var(--primary); position: relative; z-index: 100;
+        .header-bar {
+            background: #000; border-bottom: 1px solid var(--primary);
+            padding: 15px 20px; display: flex; justify-content: space-between;
+            font-size: 0.9rem;
         }
-        .top-bar span.blink { animation: flash 1s infinite alternate; color: var(--secondary); }
-        .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; color: #fff; font-size: 1.2rem;}
-        .logo img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--primary); }
+        .header-bar span.blink { color: var(--secondary); animation: blink 1s infinite alternate; }
+        @keyframes blink { from { opacity: 1; } to { opacity: 0.5; } }
 
-        /* ড্যাশবোর্ড গ্রিড */
-        .dashboard-grid {
-            display: grid; grid-template-columns: 350px 1fr; gap: 20px;
-            padding: 20px 5%; max-width: 1400px; margin: 0 auto; width: 100%; flex: 1;
-        }
-
-        /* বাম প্যানেল (রাডার, সিস্টেম স্ট্যাটাস) */
-        .side-panel { display: flex; flex-direction: column; gap: 20px; }
-        .panel-box {
-            border: 1px solid var(--border); background: rgba(0,0,0,0.8);
-            padding: 15px; border-radius: 5px; box-shadow: 0 0 15px rgba(0,255,65,0.05);
-        }
-        .panel-title { font-size: 0.9rem; color: var(--cyan); margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
+        .dashboard { padding: 40px 5%; max-width: 1000px; margin: 0 auto; text-align: center; }
         
-        /* রাডার */
-        .radar { width: 100%; height: 160px; background: url('https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg') center/contain no-repeat; filter: invert(1) sepia(1) hue-rotate(80deg) saturate(5); opacity: 0.6; position: relative; overflow: hidden;}
-        .radar::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--primary); box-shadow: 0 0 15px var(--primary);
-            animation: scan 2s linear infinite;
+        .profile-img {
+            width: 180px; height: 180px; border-radius: 50%;
+            border: 3px solid var(--primary); box-shadow: 0 0 30px var(--primary);
+            object-fit: cover; margin-bottom: 20px; filter: grayscale(100%);
+            transition: 0.5s;
         }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
-
-        /* সিস্টেম স্ট্যাটাস */
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.85rem; }
-        .stat-bar { width: 100%; height: 6px; background: #111; border-radius: 3px; margin-bottom: 15px; overflow: hidden; border: 1px solid #333;}
-        .stat-fill { height: 100%; background: var(--secondary); width: 0%; animation: loadBar 3s forwards; box-shadow: 0 0 8px var(--secondary); }
-        @keyframes loadBar { 0% { width: 0%; } 100% { width: var(--w); } }
-
-        /* প্যাকেট স্নিফার */
-        #packet-log { font-size: 0.75rem; color: #666; height: 120px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
-
-        /* ডান প্যানেল (প্রোফাইল এবং টার্মিনাল) */
-        .main-panel { display: flex; flex-direction: column; gap: 20px; }
-
-        /* প্রোফাইল হিরো সেকশন */
-        .hero-box {
-            display: flex; align-items: center; gap: 30px; background: rgba(0,0,0,0.8);
-            border: 1px solid var(--primary); border-radius: 5px; padding: 30px; box-shadow: 0 0 20px rgba(0,255,65,0.1);
+        .profile-img:hover { filter: grayscale(0%); }
+        
+        .dashboard h1 { font-size: 2.5rem; color: #fff; margin-bottom: 10px; }
+        .dashboard h2 { font-size: 1.2rem; color: var(--cyan); margin-bottom: 30px; }
+        
+        .terminal-box {
+            background: #000; border: 1px solid var(--primary); border-radius: 5px;
+            padding: 20px; text-align: left; max-width: 700px; margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
         }
-        .hero-img img {
-            width: 150px; height: 150px; object-fit: cover; border-radius: 50%;
-            border: 3px solid var(--primary); box-shadow: 0 0 20px var(--primary);
-            filter: grayscale(100%) contrast(120%); transition: 0.5s;
-        }
-        .hero-img img:hover { filter: grayscale(0%); }
-        .hero-text h2 { color: var(--secondary); font-size: 1rem; letter-spacing: 2px; margin-bottom: 5px;}
-        .hero-text h1 { color: #fff; font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 0 10px rgba(255,255,255,0.3);}
-        .hero-text p { color: var(--text-muted); font-size: 0.95rem; }
-
-        /* টার্মিনাল উইন্ডো */
-        .terminal-container {
-            flex: 1; background: rgba(0,0,0,0.9); border: 1px solid var(--primary);
-            border-radius: 5px; box-shadow: 0 0 30px rgba(0,255,65,0.15);
-            display: flex; flex-direction: column; min-height: 350px;
-        }
-        .term-header {
-            background: #0a0a0a; padding: 10px 15px; border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .term-title { color: var(--primary); font-weight: bold; font-size: 1rem; }
-        .term-dots { display: flex; gap: 8px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
-
-        .term-body { flex: 1; padding: 20px; overflow-y: auto; font-size: 0.95rem; line-height: 1.6; }
-        .term-body::-webkit-scrollbar { width: 8px; }
-        .term-body::-webkit-scrollbar-track { background: #000; }
-        .term-body::-webkit-scrollbar-thumb { background: var(--primary); }
-
-        .input-line { display: flex; align-items: center; padding: 15px; border-top: 1px solid var(--border); background: #000; }
-        .prompt { color: var(--cyan); margin-right: 10px; font-weight: bold; }
-        input[type="text"] { background: transparent; border: none; color: #fff; font-family: 'Share Tech Mono', monospace; font-size: 1rem; width: 100%; outline: none; }
-
-        .cmd-echo { color: #fff; }
-        .highlight-red { color: var(--secondary); font-weight: bold; }
-        .highlight-cyan { color: var(--cyan); }
-
-        /* ফুটার */
-        footer { background: #000; border-top: 1px solid var(--border); padding: 15px 5%; text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 20px;}
-        .dev-text { color: var(--primary); font-weight: bold; }
-
-        /* =========================================
-           MOBILE RESPONSIVE
-           ========================================= */
-        @media (max-width: 992px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .side-panel { flex-direction: row; flex-wrap: wrap; }
-            .panel-box { flex: 1; min-width: 250px; }
-            .hero-box { flex-direction: column; text-align: center; }
-            .hero-text h1 { font-size: 2rem; }
-        }
+        .term-line { margin-bottom: 10px; font-size: 0.95rem; }
+        .term-prompt { color: var(--cyan); }
+        
+        footer { margin-top: 50px; padding: 20px; text-align: center; font-size: 0.8rem; color: #666; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
@@ -182,8 +90,8 @@
         <div class="warn-box">
             <h1>⚠️ ACCESS DENIED</h1>
             <p>> UNAUTHORIZED CONNECTION DETECTED</p>
-            <p>> LOCATION: <span class="highlight-red" id="user-location">TRACING...</span></p>
-            <p>> IP ADDRESS: <span class="highlight-cyan" id="user-ip">192.168.1.1</span></p>
+            <p>> LOCATION: <span class="highlight-red">TRACING...</span></p>
+            <p>> IP ADDRESS: <span class="highlight-cyan">192.168.1.1</span></p>
             <p>> STATUS: <span class="highlight-red">FIREWALL ACTIVE</span></p>
             <button class="btn-danger" onclick="bypassFirewall()">BYPASS FIREWALL</button>
         </div>
@@ -192,87 +100,30 @@
     <!-- ম্যাট্রিক্স ক্যানভাস -->
     <canvas id="matrixCanvas"></canvas>
 
-    <!-- ২. মেইন অ্যাপ্লিকেশন -->
+    <!-- ২. মেইন অ্যাপ্লিকেশন (ভেতরের ওয়েবসাইট) -->
     <div id="main-app">
-        <!-- টপ বার -->
-        <div class="top-bar">
-            <div class="logo">
-                <img src="logo.jpg" alt="FR Logo">
-                <span>root@foysalraja</span>
-            </div>
-            <span>[ SYSTEM STATUS: <span class="blink">● COMPROMISED</span> ]</span>
+        
+        <div class="header-bar">
+            <div>root@foysalraja:~#</div>
+            <div>[ SYSTEM STATUS: <span class="blink">● SECURE</span> ]</div>
         </div>
 
-        <!-- ড্যাশবোর্ড গ্রিড -->
-        <div class="dashboard-grid">
+        <div class="dashboard">
+            <img src="profile.jpg" alt="Foysal Raja" class="profile-img">
+            <h1>Foysal Raja</h1>
+            <h2>> Frontend Developer & Cyber Enthusiast</h2>
             
-            <!-- বাম প্যানেল (রাডার, লোড, স্নিফার) -->
-            <div class="side-panel">
-                <div class="panel-box">
-                    <div class="panel-title">Global Node Tracker</div>
-                    <div class="radar"></div>
-                </div>
-                
-                <div class="panel-box">
-                    <div class="panel-title">System Resources</div>
-                    <div class="stat-row"><span>CPU Load</span><span class="highlight-red">98%</span></div>
-                    <div class="stat-bar"><div class="stat-fill" style="--w: 98%;"></div></div>
-                    <div class="stat-row"><span>Memory</span><span class="highlight-cyan">87%</span></div>
-                    <div class="stat-bar"><div class="stat-fill" style="--w: 87%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan);"></div></div>
-                    <div class="stat-row"><span>Network Ping</span><span>12ms</span></div>
-                    <div class="stat-bar"><div class="stat-fill" style="--w: 15%;"></div></div>
-                </div>
-
-                <div class="panel-box">
-                    <div class="panel-title">Packet Sniffer</div>
-                    <div id="packet-log">
-                        <!-- জাভাস্ক্রিপ্ট ডাটা -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- ডান প্যানেল (প্রোফাইল এবং টার্মিনাল) -->
-            <div class="main-panel">
-                
-                <!-- প্রোফাইল হিরো -->
-                <div class="hero-box">
-                    <div class="hero-img">
-                        <img src="profile.jpg" alt="Foysal Raja">
-                    </div>
-                    <div class="hero-text">
-                        <h2>> WHOAMI</h2>
-                        <h1>Foysal Raja</h1>
-                        <p>Frontend Developer & Cyber Security Enthusiast. I build and break secure systems. Welcome to the mainframe.</p>
-                    </div>
-                </div>
-
-                <!-- টার্মিনাল -->
-                <div class="terminal-container">
-                    <div class="term-header">
-                        <div class="term-title">root@foysalraja:~# [SECURE SHELL]</div>
-                        <div class="term-dots">
-                            <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-                        </div>
-                    </div>
-                    <div class="term-body" id="output">
-                        <p>Initializing secure connection...</p>
-                        <p>Loading encryption modules... [OK]</p>
-                        <p>Bypassing target firewall... [SUCCESS]</p>
-                        <p class="highlight-cyan">Welcome to the mainframe. Type 'help' for commands.</p>
-                        <br>
-                    </div>
-                    <div class="input-line">
-                        <span class="prompt">root@matrix:~#</span>
-                        <input type="text" id="commandInput" autocomplete="off" spellcheck="false">
-                    </div>
-                </div>
-
+            <div class="terminal-box">
+                <div class="term-line"><span class="term-prompt">root@matrix:~#</span> ./access_granted.sh</div>
+                <div class="term-line">> Welcome to the mainframe.</div>
+                <div class="term-line">> Firewall successfully bypassed.</div>
+                <div class="term-line">> Root access acquired.</div>
+                <div class="term-line"><span class="term-prompt">root@matrix:~#</span> _</div>
             </div>
         </div>
 
-        <!-- ফুটার -->
         <footer>
-            <p>&copy; 2026 Foysal Raja. System Secured. | Developed by <span class="dev-text">Raja</span></p>
+            <p>&copy; 2026 Foysal Raja. System Secured.</p>
         </footer>
     </div>
 
@@ -280,131 +131,47 @@
          JAVASCRIPT LOGIC
          ========================================= -->
     <script>
-        // ১. এন্ট্রি ফায়ারওয়াল বাইপাস
+        // ১. ফায়ারওয়াল বাইপাস ফাংশন (এটি বাটনে ক্লিক করলে কাজ করবে)
         function bypassFirewall() {
-            const locations = ["New York, USA", "London, UK", "Moscow, Russia", "Beijing, China", "Dhaka, BD", "Tokyo, JP"];
-            const ips = ["192.168.1.1", "10.0.0.45", "172.16.254.1", "203.0.113.42", "198.51.100.7"];
-            document.getElementById('user-location').innerText = locations[Math.floor(Math.random() * locations.length)];
-            document.getElementById('user-ip').innerText = ips[Math.floor(Math.random() * ips.length)];
-            
-            setTimeout(() => {
+            // এনিমেশন বা লোডিং দেখানোর জন্য ১ সেকেন্ড অপেক্ষা করবে
+            setTimeout(function() {
                 document.getElementById('warning-screen').style.display = 'none';
                 document.getElementById('main-app').style.display = 'flex';
-                document.getElementById('commandInput').focus();
-                startTerminalIntro();
-            }, 2000); // ২ সেকেন্ড পর ভেতরে ঢুকবে
+            }, 1000);
         }
 
-        // ২. ম্যাট্রিক্স ব্যাকগ্রাউন্ড
+        // ২. ম্যাট্রিক্স ব্যাকগ্রাউন্ড ইফেক্ট
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight;
         canvas.width = window.innerWidth;
+
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
         const fontSize = 16;
         const columns = canvas.width / fontSize;
         const drops = [];
-        for (let x = 0; x < columns; x++) drops[x] = 1;
+
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
 
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(2, 2, 2, 0.05)';
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = '#00ff41';
             ctx.font = fontSize + 'px monospace';
+
             for (let i = 0; i < drops.length; i++) {
                 const text = chars.charAt(Math.floor(Math.random() * chars.length));
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
                 drops[i]++;
             }
         }
         setInterval(drawMatrix, 30);
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-
-        // ৩. প্যাকেট স্নিফার (বাম দিকের লগ)
-        const packetLog = document.getElementById('packet-log');
-        function addPacket() {
-            const hex = Math.floor(Math.random() * 16777215).toString(16).toUpperCase();
-            const p = document.createElement('div');
-            p.innerText = `> 0x${hex} ... [INTERCEPTED]`;
-            packetLog.appendChild(p);
-            if (packetLog.children.length > 6) packetLog.removeChild(packetLog.firstChild);
-        }
-        setInterval(addPacket, 500);
-
-        // ৪. টার্মিনাল লজিক
-        const inputField = document.getElementById('commandInput');
-        const outputDiv = document.getElementById('output');
-
-        function startTerminalIntro() {
-            let introLines = [
-                "root@matrix:~# ./start_trace.sh",
-                "Tracing route to target IP...",
-                "Hop 1: 10.0.0.1 (Gateway)",
-                "Hop 2: 172.16.0.1 (ISP Node)",
-                "Hop 3: 192.168.1.1 (Target Router)",
-                "Target secured. Awaiting command...",
-                "root@matrix:~# _"
-            ];
-            let i = 0;
-            function typeLine() {
-                if (i < introLines.length) {
-                    let p = document.createElement('p');
-                    p.innerText = introLines[i];
-                    outputDiv.appendChild(p);
-                    outputDiv.scrollTop = outputDiv.scrollHeight;
-                    i++;
-                    setTimeout(typeLine, 800);
-                }
-            }
-            typeLine();
-        }
-
-        inputField.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                let cmd = inputField.value.trim().toLowerCase();
-                if(cmd !== "") {
-                    runCommand(cmd);
-                    inputField.value = '';
-                }
-            }
-        });
-
-        function runCommand(cmd) {
-            let p = document.createElement('p');
-            p.innerHTML = `<span class="highlight-cyan">root@matrix:~#</span> <span class="cmd-echo">${cmd}</span>`;
-            outputDiv.appendChild(p);
-
-            let resP = document.createElement('p');
-            resP.style.marginBottom = "15px";
-
-            switch(cmd) {
-                case 'help':
-                    resP.innerHTML = "Available commands:<br> - <b>about</b>: Target information<br> - <b>scan</b>: Scan open ports<br> - <b>hack</b>: Initiate mainframe breach<br> - <b>clear</b>: Clear terminal<br> - <b>whoami</b>: Show current user";
-                    break;
-                case 'about':
-                    resP.innerHTML = "Name: Foysal Raja<br>Role: Frontend Developer & Cyber Security<br>Location: Bangladesh<br>Status: <span class='highlight-red'>DANGEROUS</span>";
-                    break;
-                case 'scan':
-                    resP.innerHTML = "Scanning target...<br>Port 22 (SSH) - OPEN<br>Port 80 (HTTP) - OPEN<br>Port 443 (HTTPS) - SECURE<br>Port 8080 (Proxy) - <span class='highlight-red'>VULNERABLE</span>";
-                    break;
-                case 'hack':
-                    resP.innerHTML = "<span class='highlight-red'>WARNING: THIS IS A SIMULATION.</span><br>Initiating brute force attack...<br>Injecting payload...<br>[||||||||||||||||||||] 100%<br><span class='highlight-cyan'>SYSTEM COMPROMISED. ROOT ACCESS GRANTED.</span>";
-                    break;
-d'>WARNING: THIS IS A SIMULATION.</span><br>Initiating brute force attack...<br>Injecting payload...<br>[||||||||||||||||||||] 100%<br><span class='highlight-cyan'>SYSTEM COMPROMISED. ROOT ACCESS GRANTED.</span>";
-                    break;
-                case 'whoami':
-                    resP.innerHTML = "guest_user (Attempting privilege escalation...)";
-                    break;
-                case 'clear':
-                    outputDiv.innerHTML = "";
-                    return;
-                default:
-                    resP.innerHTML = `Command not found: '${cmd}'. Type 'help' for options.`;
-            }
-            outputDiv.appendChild(resP);
-            outputDiv.scrollTop = outputDiv.scrollHeight;
-        }
     </script>
 </body>
 </html>
