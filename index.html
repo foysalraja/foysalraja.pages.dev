@@ -3,33 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Foysal Raja | Legendary Frontend Developer</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Foysal Raja | Creative Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           NEW LEGENDARY ROYAL THEME (Single Page)
+           ========================================= */
+        :root {
+            --bg-dark: #0d0b14; /* গাঢ় বেগুনি কালো */
+            --bg-card: #181425;
+            --primary: #a855f7; /* নিয়ন পার্পল */
+            --primary-glow: rgba(168, 85, 247, 0.4);
+            --secondary: #ec4899; /* নিয়ন পিঙ্ক */
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #2e2640;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        
+        /* Typography & Elements */
+        .highlight { 
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+        
+        .btn { 
+            display: inline-block; padding: 14px 32px; 
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: #fff; border-radius: 30px; font-weight: 600; 
+            transition: 0.3s; border: none; cursor: pointer; font-size: 1rem;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--primary-glow); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); box-shadow: none; }
+        .btn-outline:hover { background: var(--primary); }
+
+        /* =========================================
+           NAVBAR
+           ========================================= */
+        .navbar { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px 8%; background: rgba(13, 11, 20, 0.8); 
+            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000; 
+            border-bottom: 1px solid var(--border);
+        }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 800; }
+        .logo-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a { font-weight: 400; color: var(--text-muted); transition: 0.3s; font-size: 1.05rem; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); font-weight: 600; }
+        
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1001; }
+        .hamburger span { width: 30px; height: 3px; background: var(--primary); border-radius: 3px; transition: 0.3s; }
+
+        /* =========================================
+           HERO SECTION
+           ========================================= */
+        .hero { 
+            display: flex; align-items: center; justify-content: space-between; 
+            min-height: 90vh; padding: 0 8%; gap: 60px; 
+        }
+        .hero-text { flex: 1; }
+        .hero-text h2 { font-size: 1.2rem; color: var(--primary); margin-bottom: 15px; letter-spacing: 3px; text-transform: uppercase; }
+        .hero-text h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 25px; font-weight: 800; }
+        .hero-text p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 40px; max-width: 500px; }
+        
+        .hero-image { flex: 1; display: flex; justify-content: center; position: relative; }
+        .hero-image::before {
+            content: ''; position: absolute; width: 350px; height: 350px;
+            background: var(--primary); filter: blur(100px); opacity: 0.3; border-radius: 50%; z-index: -1;
+        }
+        .hero-image img { 
+            width: 350px; height: 350px; object-fit: cover; 
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* অর্গানিক শেপ */
+            border: 3px solid var(--primary); box-shadow: 0 0 40px var(--primary-glow);
+            animation: morph 8s ease-in-out infinite;
+        }
+        @keyframes morph {
+            0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            50% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
+            100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        }
+
+        /* =========================================
+           SKILLS / STATS SECTION
+           ========================================= */
+        .stats-section {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+            padding: 60px 8%; background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat-box h3 { font-size: 3rem; color: var(--primary); font-weight: 800; margin-bottom: 5px; }
+        .stat-box p { color: var(--text-muted); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* =========================================
+           FOOTER (আপনার আগের ফুটার)
+           ========================================= */
+        footer { background: #050408; border-top: 1px solid var(--border); padding: 20px 5% 15px; margin-top: 20px; font-size: 0.8rem; }
+        .footer-container { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; text-align: left; }
+        
+        .footer-brand { flex: 1; min-width: 200px; }
+        .footer-brand img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); margin-bottom: 8px; }
+        .footer-brand h3 { color: #fff; font-size: 1.1rem; margin-bottom: 3px; }
+        .footer-brand p { color: var(--text-muted); font-size: 0.8rem; max-width: 220px; line-height: 1.4; }
+        
+        .footer-links { flex: 1; min-width: 120px; }
+        .footer-links h4, .footer-social h4 { color: #fff; margin-bottom: 10px; font-size: 1rem; }
+        .footer-links ul { list-style: none; }
+        .footer-links ul li { margin-bottom: 6px; }
+        .footer-links ul a { color: var(--text-muted); font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .footer-links ul a:hover { color: var(--primary); }
+        .footer-links ul a svg { width: 14px; height: 14px; }
+        
+        .footer-social { flex: 1; min-width: 160px; }
+        .social-icons { display: flex; gap: 8px; margin-bottom: 15px; }
+        .social-icons a { 
+            display: flex; justify-content: center; align-items: center; 
+            width: 35px; height: 35px; background: var(--bg-card); color: var(--primary); 
+            border-radius: 8px; border: 1px solid var(--border); transition: 0.3s; 
+        }
+        .social-icons a:hover { background: var(--primary); color: #fff; transform: translateY(-3px); }
+        .social-icons a svg { width: 16px; height: 16px; }
+        
+        .call-btn { 
+            display: inline-flex; align-items: center; justify-content: center; 
+            background: var(--secondary); color: #fff; padding: 0 15px; height: 35px; 
+            border-radius: 8px; font-weight: 600; font-size: 0.85rem; transition: 0.3s; width: 100%; 
+        }
+        .call-btn:hover { background: #be185d; transform: translateY(-2px); }
+        
+        .footer-bottom { 
+            text-align: center; margin-top: 20px; padding-top: 15px; 
+            border-top: 1px solid var(--border); color: var(--text-muted); 
+            font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; 
+        }
+        .dev-text { color: var(--primary); font-weight: 600; }
+
+        /* =========================================
+           MOBILE RESPONSIVE
+           ========================================= */
+        @media (max-width: 900px) {
+            .hero-text h1 { font-size: 3.5rem; }
+            .hero-image img { width: 300px; height: 300px; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 250px; height: 100vh;
+                background: rgba(13, 11, 20, 0.98); flex-direction: column; justify-content: center; align-items: center;
+                transition: 0.4s ease; border-left: 1px solid var(--primary); z-index: 999;
+            }
+            .nav-links.active { right: 0; }
+            
+            .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+            
+            .hero { flex-direction: column-reverse; text-align: center; padding: 40px 5%; gap: 40px; min-height: auto; }
+            .hero-text h1 { font-size: 2.8rem; }
+            .hero-text p { margin: 0 auto 30px auto; }
+            .hero-image img { width: 250px; height: 250px; }
+            
+            .stats-section { grid-template-columns: 1fr; gap: 30px; }
+            
+            .footer-container { flex-direction: row; flex-wrap: wrap; justify-content: space-between; text-align: left; gap: 20px; }
+            .footer-brand { flex: 100%; text-align: center; margin-bottom: 10px; }
+            .footer-brand p { margin: 0 auto; }
+            .footer-social { text-align: right; }
+            .social-icons { justify-content: flex-end; }
+            .footer-bottom { flex-direction: column; justify-content: center; }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">
-            <img src="logo.jpg" alt="Logo" class="logo-img">
+            <img src="logo.jpg" alt="FR Logo" class="logo-img">
             <span>Foysal Raja</span>
         </div>
         <ul class="nav-links" id="navLinks">
-            <li><a href="index.html" class="active">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="game.html">Games</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Games</a></li>
+            <li><a href="#">Contact</a></li>
         </ul>
         <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-text">
-            <h3>Hello, Welcome To My World</h3>
-            <h1>I am <span class="highlight">Foysal Raja</span></h1>
-            <p>Building legendary, responsive, and lightning-fast digital experiences. I specialize in crafting modern web applications and interactive browser games.</p>
+            <h2>Hello, I Am</h2>
+            <h1>Foysal <span class="highlight">Raja</span></h1>
+            <p>A creative Frontend Developer specializing in building exceptional digital experiences. I turn complex problems into simple, beautiful, and intuitive designs.</p>
             <div class="hero-btns">
-                <a href="contact.html" class="btn">Hire Me Now</a>
-                <a href="about.html" class="btn btn-outline">Explore Work</a>
+                <a href="#" class="btn">Let's Talk</a>
+                <a href="#" class="btn btn-outline" style="margin-left: 10px;">View Portfolio</a>
             </div>
         </div>
         <div class="hero-image">
@@ -37,23 +217,41 @@
         </div>
     </section>
 
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stat-box">
+            <h3>15+</h3>
+            <p>Projects Completed</p>
+        </div>
+        <div class="stat-box">
+            <h3>08</h3>
+            <p>Interactive Games</p>
+        </div>
+        <div class="stat-box">
+            <h3>100%</h3>
+            <p>Dedication</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="footer-brand">
                 <img src="logo.jpg" alt="FR Logo">
                 <h3>Foysal Raja</h3>
-                <span class="tagline">Frontend Developer & Game Creator</span>
                 <p>Building creative digital experiences for the web.</p>
             </div>
+            
             <div class="footer-links">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Home</a></li>
-                    <li><a href="about.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> About Me</a></li>
-                    <li><a href="services.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> Services</a></li>
-                    <li><a href="game.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Games Zone</a></li>
+                    <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Home</a></li>
+                    <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> About Me</a></li>
+                    <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> Services</a></li>
+                    <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Games Zone</a></li>
                 </ul>
             </div>
+            
             <div class="footer-social">
                 <h4>Connect With Me</h4>
                 <div class="social-icons">
@@ -62,7 +260,7 @@
                     <a href="https://www.instagram.com/foysal_raja" target="_blank" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
                     <a href="https://wa.me/8801718041025" target="_blank" title="WhatsApp"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
                 </div>
-                <div style="margin-top: 10px;"><a href="tel:+8809638576363" class="call-btn">📞 Call Me</a></div>
+                <div><a href="tel:+8809638576363" class="call-btn">📞 Call Me</a></div>
             </div>
         </div>
         <div class="footer-bottom">
@@ -70,11 +268,16 @@
             <p>Developed by <span class="dev-text">Raja</span></p>
         </div>
     </footer>
+
+    <!-- Script for Mobile Menu -->
     <script>
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
-        hamburger.addEventListener('click', () => { hamburger.classList.toggle('active'); navLinks.classList.toggle('active'); });
-        document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => { hamburger.classList.remove('active'); navLinks.classList.remove('active'); }); });
+        
+        hamburger.addEventListener('click', () => { 
+            hamburger.classList.toggle('active'); 
+            navLinks.classList.toggle('active'); 
+        });
     </script>
 </body>
 </html>
